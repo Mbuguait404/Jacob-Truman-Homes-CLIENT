@@ -128,6 +128,33 @@
   backdrop-filter: blur(6px);
   box-shadow: 0 1px 0 var(--line);
 }
+.jth-nav--on-hero {
+  background: transparent;
+}
+.jth-nav--on-hero .jth-brand {
+  color: #fff;
+}
+.jth-nav--on-hero .jth-brand__mark {
+  border-color: #fff;
+}
+.jth-nav--on-hero .jth-nav__links a {
+  color: #fff;
+}
+.jth-nav--on-hero .jth-nav__links a.active,
+.jth-nav--on-hero .jth-nav__links a:hover {
+  border-color: #e7c08f;
+}
+.jth-nav--on-hero .jth-nav__burger {
+  color: #fff;
+}
+.jth-nav--on-hero .jth-btn--ghost {
+  color: #fff;
+}
+.jth-nav--on-hero .jth-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
 .jth-nav__inner {
   max-width: 1240px;
   margin: 0 auto;

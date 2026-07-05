@@ -21,9 +21,10 @@ export default function Nav() {
   ];
 
   const isHome = location.pathname === "/";
+  const onHero = isHome && !scrolled;
 
   return (
-    <header className={`jth-nav ${scrolled || !isHome ? "jth-nav--solid" : ""}`}>
+    <header className={`jth-nav ${scrolled || !isHome ? "jth-nav--solid" : ""} ${onHero ? "jth-nav--on-hero" : ""}`}>
       <div className="jth-nav__inner">
         <Link to="/" className="jth-brand">
           <span className="jth-brand__mark">JT</span>
