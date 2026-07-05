@@ -835,6 +835,15 @@
   aspect-ratio: 16 / 8;
   overflow: hidden;
   margin-bottom: 10px;
+  position: relative;
+}
+.jth-detail__seal {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: #fff;
+  opacity: 0.92;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
 }
 .jth-detail__thumbs {
   display: grid;

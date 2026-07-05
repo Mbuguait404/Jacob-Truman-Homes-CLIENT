@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { ChevronLeft, MapPin, Check, ShieldCheck, Phone, Mail } from "lucide-react";
 import Img from "../components/common/Img";
+import Seal from "../components/common/Seal";
 import { StatusBadge, SpecRow, Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import { useListings } from "../context/ListingsContext";
@@ -28,6 +29,9 @@ export default function ListingDetailPage() {
       <div className="jth-detail__gallery">
         <div className="jth-detail__hero-img">
           <Img seed={gallery[activeImg]} w={1200} h={800} alt={listing.title} />
+          <div className="jth-detail__seal">
+            <Seal size={74} />
+          </div>
         </div>
         <div className="jth-detail__thumbs">
           {gallery.map((s, i) => (
