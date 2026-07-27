@@ -12,7 +12,7 @@ export default function Seal({ size = 74 }) {
           <textPath href="#sealArcTop" startOffset="50%" textAnchor="middle">JACOB TRUMAN</textPath>
         </text>
         <text fontSize="8.2" letterSpacing="2.5" fill="currentColor" fontFamily="Work Sans">
-          <textPath href="#sealArcBottom" startOffset="50%" textAnchor="middle">HOMES · EST.</textPath>
+          <textPath href="#sealArcBottom" startOffset="50%" textAnchor="middle">PROPERTIES · EST.</textPath>
         </text>
         <text x="50" y="56" fontSize="20" fill="currentColor" textAnchor="middle" fontFamily="Fraunces" fontWeight="500">
           JTH

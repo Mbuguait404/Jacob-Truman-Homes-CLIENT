@@ -16,7 +16,7 @@ export default function EnquiryPage({ mode }) {
         <p>
           {isSell
             ? "A member of our team will call within one business day to arrange a free valuation."
-            : "Share your brief and we'll shortlist matching homes across Nairobi and Eldoret."}
+            : "Share your brief and we'll shortlist matching properties across Kenya."}
         </p>
         <Img seed={isSell ? "sell-enquiry" : "buy-enquiry"} w={800} h={600} />
       </div>
@@ -25,7 +25,7 @@ export default function EnquiryPage({ mode }) {
           <div className="jth-enquiry__success">
             <Check size={28} />
             <h3>Thank you — we've received this.</h3>
-            <p>Someone from Jacob Truman Homes will be in touch shortly.</p>
+            <p>Someone from Jacob Truman Properties will be in touch shortly.</p>
             <Link className="jth-btn jth-btn--outline" to="/">
               Back to home
             </Link>

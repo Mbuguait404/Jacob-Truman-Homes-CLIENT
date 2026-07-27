@@ -1,4 +1,4 @@
-export const CITIES = ["Nairobi", "Eldoret"];
+export const CITIES = ["Nairobi", "Kiambu", "Eldoret", "Kajiado"];
 
 export const INITIAL_LISTINGS = [
   {

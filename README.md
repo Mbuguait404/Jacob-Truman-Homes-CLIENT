@@ -1,6 +1,6 @@
-# Jacob Truman Homes
+# Jacob Truman Properties
 
-A React + Vite prototype for a Nairobi & Eldoret residential real-estate agency site: landing page, listings with URL-based filters, listing detail pages, an about/owner page, buy/sell enquiry forms, and a separate admin portal with its own routes (dashboard, listings, add/edit) — all backed by in-memory state, no real backend/database yet.
+A React + Vite prototype for a Kenyan real-estate agency site: landing page, listings with URL-based filters, listing detail pages, an about page, buy/sell enquiry forms, and a separate admin portal with its own routes (dashboard, listings, add/edit) — all backed by in-memory state, no real backend/database yet.
 
 ## Getting started
 

@@ -29,7 +29,7 @@ export default function Nav() {
         <Link to="/" className="jth-brand">
           <span className="jth-brand__mark">JT</span>
           <span className="jth-brand__text">
-            Jacob Truman <em>Homes</em>
+            Jacob Truman <em>Properties</em>
           </span>
         </Link>
         <nav className="jth-nav__links">

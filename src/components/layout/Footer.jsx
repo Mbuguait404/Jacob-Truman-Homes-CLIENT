@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="jth-footer__top">
         <div className="jth-footer__brand">
           <Seal size={64} />
-          <p>Residential sales, lettings and management across Nairobi and Eldoret, since 2011.</p>
+          <p>Trusted real estate company specializing in sale, letting, management and investment advisory across Kenya.</p>
         </div>
         <div className="jth-footer__col">
           <h4>Explore</h4>
@@ -20,19 +20,22 @@ export default function Footer() {
         </div>
         <div className="jth-footer__col">
           <h4>Services</h4>
-          <span>Buy with us</span>
-          <span>Sell with us</span>
-          <span>Rent &amp; management</span>
+          <span>Property Sales</span>
+          <span>Residential &amp; Commercial Letting</span>
+          <span>Property Management</span>
+          <span>Land Sales</span>
+          <span>Investment Consultancy</span>
+          <span>Property Marketing</span>
         </div>
         <div className="jth-footer__col">
           <h4>Contact</h4>
-          <span><Phone size={14} /> +254 722 000 000</span>
-          <span><Mail size={14} /> hello@jacobtrumanhomes.co.ke</span>
-          <span><MapPin size={14} /> Kilimani, Nairobi · Elgon View, Eldoret</span>
+          <span><Phone size={14} /> 0718 806741 | 0100201010</span>
+          <span><Mail size={14} /> info@trumanproperties.com</span>
+          <span><MapPin size={14} /> Nairobi, Kenya</span>
         </div>
       </div>
       <div className="jth-footer__bottom">
-        <span>© {new Date().getFullYear()} Jacob Truman Homes. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Jacob Truman Properties. All rights reserved.</span>
         <div className="jth-footer__social">
           <Instagram size={16} />
           <Facebook size={16} />

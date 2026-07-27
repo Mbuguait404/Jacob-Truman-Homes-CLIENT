@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, ChevronRight, Compass, Handshake, KeyRound, Quote } from "lucide-react";
+import { ArrowRight, ChevronRight, Building2, Home, Landmark, ShieldCheck, TrendingUp, Megaphone, Quote } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
@@ -23,15 +23,15 @@ export default function HomePage() {
         </div>
         <div className="jth-hero__scrim" />
         <div className="jth-hero__content">
-          <Eyebrow>Nairobi &amp; Eldoret · Est. 2011</Eyebrow>
+          <Eyebrow>Across Kenya · Est. 2011</Eyebrow>
           <h1>
-            Homes carried
+            Your trusted partner
             <br />
-            from one keeper
+            in Kenyan real
             <br />
-            to the next.
+            estate.
           </h1>
-          <p>We buy, sell, let and manage residential property across Nairobi and Eldoret — quietly, carefully, and for the long term.</p>
+          <p>We specialise in the sale, letting, management and investment advisory of residential, commercial and land properties across Kenya — with transparency, integrity and exceptional service.</p>
           <div className="jth-hero__actions">
             <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/listings")}>
               Browse listings <ArrowRight size={16} />
@@ -45,7 +45,7 @@ export default function HomePage() {
 
       <section className="jth-section jth-strip">
         <div className="jth-strip__item"><strong>240+</strong><span>Homes placed since 2011</span></div>
-        <div className="jth-strip__item"><strong>2</strong><span>Cities — Nairobi &amp; Eldoret</span></div>
+        <div className="jth-strip__item"><strong>4+</strong><span>Regions — across Kenya</span></div>
         <div className="jth-strip__item"><strong>18 days</strong><span>Average time to let</span></div>
         <div className="jth-strip__item"><strong>4.9 / 5</strong><span>Client satisfaction</span></div>
       </section>
@@ -72,30 +72,54 @@ export default function HomePage() {
 
       <section className="jth-section jth-services">
         <Eyebrow>What we do</Eyebrow>
-        <h2>One roof, three ways in</h2>
+        <h2>Comprehensive property services</h2>
         <div className="jth-services__grid">
           <div className="jth-service-card">
-            <Compass size={26} />
-            <h3>Buy with us</h3>
-            <p>We shortlist against your brief, arrange private viewings, and negotiate the price and terms on your behalf.</p>
+            <Building2 size={26} />
+            <h3>Property Sales</h3>
+            <p>Expert guidance through every step of buying or selling residential, commercial and land properties.</p>
             <Link className="jth-link" to="/listings?type=For+Sale">
               Browse homes for sale <ChevronRight size={15} />
             </Link>
           </div>
           <div className="jth-service-card">
-            <Handshake size={26} />
-            <h3>Sell with us</h3>
-            <p>Valuation, photography, listing and negotiation, handled from the first viewing to the signed transfer.</p>
-            <Link className="jth-link" to="/sell">
-              Start a sale <ChevronRight size={15} />
+            <Home size={26} />
+            <h3>Residential &amp; Commercial Letting</h3>
+            <p>Find the perfect rental property or let your property to qualified tenants through our managed letting service.</p>
+            <Link className="jth-link" to="/listings?type=For+Rent">
+              Browse rentals <ChevronRight size={15} />
             </Link>
           </div>
           <div className="jth-service-card">
-            <KeyRound size={26} />
-            <h3>Rent &amp; manage</h3>
-            <p>Tenant vetting, lease management and ongoing upkeep for landlords who would rather not be on call.</p>
-            <Link className="jth-link" to="/listings?type=For+Rent">
-              Browse rentals <ChevronRight size={15} />
+            <ShieldCheck size={26} />
+            <h3>Property Management</h3>
+            <p>Full-service property management including tenant vetting, lease administration, and ongoing maintenance.</p>
+            <Link className="jth-link" to="/sell">
+              Enquire now <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="jth-service-card">
+            <Landmark size={26} />
+            <h3>Land Sales</h3>
+            <p>Access verified land parcels for residential, commercial or agricultural investment across Kenya.</p>
+            <Link className="jth-link" to="/listings">
+              View land listings <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="jth-service-card">
+            <TrendingUp size={26} />
+            <h3>Investment Consultancy</h3>
+            <p>Data-driven property investment advice to help you make informed decisions and maximise returns.</p>
+            <Link className="jth-link" to="/buy">
+              Get in touch <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="jth-service-card">
+            <Megaphone size={26} />
+            <h3>Property Marketing &amp; Valuation</h3>
+            <p>Professional photography, targeted marketing, and reliable valuation support for your property.</p>
+            <Link className="jth-link" to="/sell">
+              Market your property <ChevronRight size={15} />
             </Link>
           </div>
         </div>
@@ -123,15 +147,15 @@ export default function HomePage() {
         <Link className="jth-city-panel" to="/listings?city=Nairobi">
           <Img seed="city-nairobi" w={900} h={1100} />
           <div className="jth-city-panel__label">
-            <h3>Nairobi</h3>
-            <span>Karen · Kilimani · Runda · Westlands · Lavington</span>
+            <h3>Nairobi &amp; Kiambu</h3>
+            <span>Karen · Kilimani · Runda · Westlands · Lavington · Kiambu · Thika</span>
           </div>
         </Link>
         <Link className="jth-city-panel" to="/listings?city=Eldoret">
           <Img seed="city-eldoret" w={900} h={1100} />
           <div className="jth-city-panel__label">
-            <h3>Eldoret</h3>
-            <span>Elgon View · Pioneer · Kapsoya · Racecourse</span>
+            <h3>Eldoret &amp; Kajiado</h3>
+            <span>Elgon View · Pioneer · Kapsoya · Racecourse · Kajiado · Ngong</span>
           </div>
         </Link>
       </section>
@@ -153,7 +177,7 @@ export default function HomePage() {
       </section>
 
       <section className="jth-cta-band">
-        <h2>Thinking of selling, letting, or finding your next home?</h2>
+        <h2>Ready to buy, sell, let or invest in Kenyan property?</h2>
         <div className="jth-hero__actions">
           <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/sell")}>
             Sell with us

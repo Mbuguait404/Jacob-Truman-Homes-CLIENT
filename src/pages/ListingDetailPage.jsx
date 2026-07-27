@@ -97,8 +97,8 @@ export default function ListingDetailPage() {
               </div>
             </div>
             <div className="jth-price-card__contact">
-              <span><Phone size={14} /> +254 722 000 000</span>
-              <span><Mail size={14} /> hello@jacobtrumanhomes.co.ke</span>
+              <span><Phone size={14} /> 0718 806741 | 0100201010</span>
+              <span><Mail size={14} /> info@trumanproperties.com</span>
             </div>
           </div>
           <div className="jth-trust-card">

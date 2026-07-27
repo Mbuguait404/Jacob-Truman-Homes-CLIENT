@@ -1035,9 +1035,13 @@
   font-size: 12px;
   color: #8a7a68;
 }
+.jth-values-section h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+}
 .jth-values {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 30px;
 }
 .jth-value {
@@ -1058,9 +1062,102 @@
 @media (max-width: 900px) {
   .jth-about__hero,
   .jth-owner,
-  .jth-values {
+  .jth-values,
+  .jth-vision-mission,
+  .jth-why-us__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---- Vision & Mission ---- */
+.jth-vision-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding-top: 0;
+}
+.jth-vm-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 32px 28px;
+}
+.jth-vm-card p {
+  font-size: 16px;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* ---- Why Choose Us ---- */
+.jth-why-us h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+.jth-why-us__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 30px;
+}
+.jth-why-us__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: #544537;
+}
+.jth-why-us__item svg {
+  color: var(--sage);
+  flex-shrink: 0;
+}
+
+/* ---- Areas We Serve ---- */
+.jth-areas h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+.jth-areas__intro {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.jth-areas__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.jth-areas__grid span {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 12px 22px;
+  font-family: "Fraunces", serif;
+  font-size: 18px;
+  color: var(--ink);
+}
+.jth-areas__note {
+  font-size: 14px;
+  color: #8a7a68;
+  font-style: italic;
+}
+
+/* ---- Commitment ---- */
+.jth-commitment {
+  background: var(--coffee);
+  color: #fff;
+  text-align: center;
+  padding: 80px 28px;
+}
+.jth-commitment .jth-eyebrow {
+  color: #e7c08f;
+}
+.jth-commitment h2 {
+  color: #fff;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+.jth-commitment p {
+  color: rgba(239, 230, 214, 0.85);
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 15px;
 }
 
 /* ---------------------------------- ENQUIRY PAGE ---------------------------------- */
