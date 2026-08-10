@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, X } from "lucide-react";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -80,6 +80,13 @@ export default function Nav() {
 
       {/* Mobile overlay */}
       <div className={`jth-nav__overlay ${open ? "jth-nav__overlay--open" : ""}`}>
+        <button
+          className="jth-nav__overlay-close"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={28} />
+        </button>
         <div className="jth-nav__overlay-inner">
           <nav className="jth-nav__overlay-links">
             {links.map(([to, label], i) => (
