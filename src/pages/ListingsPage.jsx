@@ -1,6 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
@@ -50,6 +50,11 @@ export default function ListingsPage() {
           <Eyebrow>Browse</Eyebrow>
           <h1>{filtered.length} {filtered.length === 1 ? "home" : "homes"} across Kenya</h1>
           <p>Verified properties for sale, rent and investment across Nairobi, Kiambu, Eldoret, Kajiado and beyond.</p>
+          <div className="jth-hero-badges">
+            <span className="jth-hero-badge"><ShieldCheck size={14} /> Verified listings</span>
+            <span className="jth-hero-badge"><MapPin size={14} /> Nationwide</span>
+            <span className="jth-hero-badge"><Home size={14} /> Sale &amp; Rent</span>
+          </div>
         </div>
       </div>
 

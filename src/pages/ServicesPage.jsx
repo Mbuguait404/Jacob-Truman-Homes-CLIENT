@@ -12,6 +12,9 @@ import {
   Users,
   ArrowRight,
   ChevronRight,
+  Calendar,
+  MapPin,
+  Layers,
 } from "lucide-react";
 import { Eyebrow } from "../components/common/SmallBits";
 
@@ -100,6 +103,11 @@ export default function ServicesPage() {
             From sales and letting to management and investment advisory — we deliver
             professional, transparent and customer-focused real estate solutions across Kenya.
           </p>
+          <div className="jth-hero-badges">
+            <span className="jth-hero-badge"><Calendar size={14} /> Est. 2011</span>
+            <span className="jth-hero-badge"><Layers size={14} /> 8 Services</span>
+            <span className="jth-hero-badge"><MapPin size={14} /> Kenya-wide</span>
+          </div>
         </div>
       </section>
 
