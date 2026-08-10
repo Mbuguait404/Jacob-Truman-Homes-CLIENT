@@ -30,6 +30,7 @@ export default function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/listings" element={<ListingsPage />} />
               <Route path="/listings/:id" element={<ListingDetailPage />} />
+              <Route path="/listings/:id/enquire" element={<EnquiryPage mode="buy" />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/sell" element={<EnquiryPage mode="sell" />} />

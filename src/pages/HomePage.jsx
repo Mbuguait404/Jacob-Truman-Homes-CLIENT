@@ -10,11 +10,11 @@ import { PROCESS_STEPS } from "../data/process";
 import { CITIES } from "../data/listings";
 
 export default function HomePage() {
-  const { listings } = useListings();
+  const { visibleListings } = useListings();
   const navigate = useNavigate();
   const [searchCity, setSearchCity] = useState("All Regions");
   const [searchType, setSearchType] = useState("All Types");
-  const featured = listings.filter((l) => l.featured);
+  const featured = visibleListings.filter((l) => l.featured);
 
   const handleSearch = () => {
     const params = new URLSearchParams();

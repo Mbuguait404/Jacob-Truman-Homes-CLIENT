@@ -11,17 +11,17 @@ import { formatPrice } from "../utils/format";
 export default function ListingDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { listings } = useListings();
+  const { visibleListings } = useListings();
   const [activeImg, setActiveImg] = useState(0);
 
-  const listing = listings.find((l) => String(l.id) === id);
+  const listing = visibleListings.find((l) => String(l.id) === id);
   if (!listing) return <Navigate to="/listings" replace />;
 
   const gallery = listing.images?.length
     ? listing.images
     : [listing.seed, `${listing.seed}-b`, `${listing.seed}-c`, `${listing.seed}-d`].filter(Boolean);
 
-  const related = listings.filter((l) => l.id !== listing.id && l.city === listing.city).slice(0, 3);
+  const related = visibleListings.filter((l) => l.id !== listing.id && l.city === listing.city).slice(0, 3);
 
   return (
     <div className="jth-detail">
@@ -92,7 +92,7 @@ export default function ListingDetailPage() {
               <div className="jth-price-card__price">{formatPrice(listing.price, listing.listingType === "For Rent")}</div>
               <StatusBadge status={listing.status} />
             </div>
-            <Link className="jth-btn jth-btn--primary jth-btn--block" to="/buy">
+            <Link className="jth-btn jth-btn--primary jth-btn--block" to={`/buy?listingId=${listing.id}`}>
               {listing.listingType === "For Rent" ? "Enquire to rent" : "Enquire to buy"}
             </Link>
             <Link className="jth-btn jth-btn--outline jth-btn--block" to="/about">

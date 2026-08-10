@@ -1,14 +1,28 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Check, Send, Phone, Mail, Globe, MapPin } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Check, Send, Phone, Mail, Globe, MapPin, Home } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import { api } from "../api/client";
+import { useListings } from "../context/ListingsContext";
 
 export default function EnquiryPage({ mode }) {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const isSell = mode === "sell";
+
+  const [searchParams] = useSearchParams();
+  const listingId = searchParams.get("listingId");
+  const { listings } = useListings();
+
+  const listing = useMemo(
+    () => listings.find((l) => String(l.id) === listingId),
+    [listings, listingId]
+  );
+
+  const defaultLocation = listing
+    ? `${listing.neighborhood}, ${listing.city}`
+    : "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +36,7 @@ export default function EnquiryPage({ mode }) {
       email: form.elements.email.value || undefined,
       location: form.elements.location.value || undefined,
       message: form.elements.message.value || undefined,
+      listing: listingId || undefined,
     };
 
     try {
@@ -39,9 +54,17 @@ export default function EnquiryPage({ mode }) {
       <div className="jth-enquiry__side">
         <div className="jth-enquiry__side-text">
           <Eyebrow>{isSell ? "Sell with us" : "Buy or rent with us"}</Eyebrow>
-          <h1>{isSell ? "Tell us about your home" : "Tell us what you're looking for"}</h1>
+          <h1>
+            {listing
+              ? `Enquire about ${listing.title}`
+              : isSell
+              ? "Tell us about your home"
+              : "Tell us what you're looking for"}
+          </h1>
           <p>
-            {isSell
+            {listing
+              ? "Complete the form below and we'll get back to you about this property."
+              : isSell
               ? "A member of our team will call within one business day to arrange a free valuation."
               : "Share your brief and we'll shortlist matching properties across Kenya."}
           </p>
@@ -82,6 +105,16 @@ export default function EnquiryPage({ mode }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {listing && (
+              <div className="jth-enquiry__listing-ref">
+                <Home size={18} />
+                <div>
+                  <strong>{listing.title}</strong>
+                  <span>{listing.neighborhood}, {listing.city}</span>
+                </div>
+                <Link to={`/listings/${listing.id}`}>View</Link>
+              </div>
+            )}
             <label>
               Full name
               <input name="name" required placeholder="Your name" />
@@ -96,7 +129,11 @@ export default function EnquiryPage({ mode }) {
             </label>
             <label>
               {isSell ? "Property location" : "Preferred city / area"}
-              <input name="location" placeholder="e.g. Karen, Nairobi" />
+              <input
+                name="location"
+                placeholder="e.g. Karen, Nairobi"
+                defaultValue={defaultLocation}
+              />
             </label>
             <label>
               {isSell ? "Tell us about the property" : "What are you looking for?"}

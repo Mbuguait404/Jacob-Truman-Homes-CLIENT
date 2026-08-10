@@ -1,6 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home } from "lucide-react";
+import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home, AlertTriangle } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
@@ -8,7 +8,7 @@ import { useListings } from "../context/ListingsContext";
 import { CITIES } from "../data/listings";
 
 export default function ListingsPage() {
-  const { listings } = useListings();
+  const { visibleListings, error } = useListings();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const city = searchParams.get("city") || "All";
@@ -32,7 +32,7 @@ export default function ListingsPage() {
     setSearchParams(new URLSearchParams());
   };
 
-  const filtered = listings.filter((l) => {
+  const filtered = visibleListings.filter((l) => {
     if (city !== "All" && l.city !== city) return false;
     if (type !== "All" && l.listingType !== type) return false;
     if (beds !== "Any" && l.beds < Number(beds)) return false;
@@ -59,6 +59,12 @@ export default function ListingsPage() {
       </div>
 
       <div className="jth-page-header-wrap">
+        {error && (
+          <div className="jth-fallback-notice">
+            <AlertTriangle size={16} />
+            <span>{error}</span>
+          </div>
+        )}
         <div className="jth-filters">
           <div className="jth-filters__bar">
             <div className="jth-filters__group">

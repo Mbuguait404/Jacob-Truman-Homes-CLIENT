@@ -1,6 +1,6 @@
-import React from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Building2, PlusCircle, Mail } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { LayoutDashboard, Building2, PlusCircle, Mail, Menu, X } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 import AdminLogin from "./AdminLogin";
 import "../styles/admin.css";
@@ -8,6 +8,25 @@ import "../styles/admin.css";
 export default function AdminLayout() {
   const { admin, logout, loading } = useAdminAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   if (loading) {
     return (
@@ -28,7 +47,27 @@ export default function AdminLayout() {
 
   return (
     <div className="jth-admin">
-      <aside className="jth-admin__sidebar">
+      {/* Mobile header */}
+      <header className="jth-admin__mobile-header">
+        <div className="jth-admin__mobile-brand">
+          <span className="jth-brand__mark">JT</span> Admin
+        </div>
+        <button
+          className="jth-admin__mobile-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </header>
+
+      {/* Overlay backdrop on mobile */}
+      {menuOpen && (
+        <div className="jth-admin__overlay" onClick={() => setMenuOpen(false)} />
+      )}
+
+      <aside className={`jth-admin__sidebar ${menuOpen ? "jth-admin__sidebar--open" : ""}`}>
         <div className="jth-admin__brand">
           <span className="jth-brand__mark">JT</span> Admin
         </div>

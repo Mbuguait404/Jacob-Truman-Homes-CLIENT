@@ -8,7 +8,7 @@ import { CITIES } from "../../data/listings";
 const BLANK_FORM = {
   title: "", city: "Nairobi", neighborhood: "", price: "", listingType: "For Sale",
   propertyType: "Apartment", beds: 2, baths: 1, area: "", status: "Available",
-  description: "", amenities: "", images: [],
+  description: "", amenities: "", images: [], featured: false, hidden: false,
 };
 
 export default function AdminListingForm() {
@@ -32,16 +32,20 @@ export default function AdminListingForm() {
   );
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
+  const toggle = (key) => () => setForm({ ...form, [key]: !form[key] });
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
     setUploading(true);
     try {
       const data = new FormData();
-      data.append("image", file);
+      for (const file of files) {
+        data.append("images", file);
+      }
       const res = await api.upload("/uploads", data);
-      setForm((prev) => ({ ...prev, images: [...prev.images, res.url] }));
+      const newUrls = res.urls || (res.url ? [res.url] : []);
+      setForm((prev) => ({ ...prev, images: [...prev.images, ...newUrls] }));
     } catch (err) {
       alert(err.message || "Upload failed");
     } finally {
@@ -62,7 +66,6 @@ export default function AdminListingForm() {
       beds: Number(form.beds) || 0,
       baths: Number(form.baths) || 0,
       area: Number(form.area) || 0,
-      featured: existing ? existing.featured : false,
       amenities: String(form.amenities)
         .split(",")
         .map((s) => s.trim())
@@ -143,6 +146,14 @@ export default function AdminListingForm() {
                 <option>Sold</option>
               </select>
             </label>
+            <label className="jth-admin__toggle">
+              <input type="checkbox" checked={form.featured} onChange={toggle("featured")} />
+              Featured on home page
+            </label>
+            <label className="jth-admin__toggle">
+              <input type="checkbox" checked={form.hidden} onChange={toggle("hidden")} />
+              Hide from public site
+            </label>
           </div>
           <label>
             Description
@@ -159,6 +170,7 @@ export default function AdminListingForm() {
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 ref={fileInputRef}
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
@@ -169,7 +181,7 @@ export default function AdminListingForm() {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
               >
-                <Upload size={15} /> {uploading ? "Uploading…" : "Upload image"}
+                <Upload size={15} /> {uploading ? "Uploading…" : "Upload images"}
               </button>
             </div>
             {form.images.length > 0 && (

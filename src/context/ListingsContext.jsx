@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { api } from "../api/client";
+import { INITIAL_LISTINGS } from "../data/listings";
 
 const ListingsContext = createContext(null);
 
@@ -21,11 +22,19 @@ export function ListingsProvider({ children }) {
     setLoading(true);
     try {
       const data = await api.get("/listings?limit=100&sort=-createdAt");
-      const normalized = (data.listings || []).map(normalizeListing);
-      setListings(normalized);
-      setError(null);
+      const fetched = (data.listings || []);
+      if (fetched.length > 0) {
+        setListings(fetched.map(normalizeListing));
+        setError(null);
+      } else {
+        // API returned empty — fall back to static seed data
+        setListings(INITIAL_LISTINGS);
+        setError("No live listings found. Showing sample properties.");
+      }
     } catch (err) {
-      setError(err.message || "Failed to load listings");
+      // API unavailable — fall back to static seed data
+      setListings(INITIAL_LISTINGS);
+      setError("Unable to reach server. Showing sample properties.");
     } finally {
       setLoading(false);
     }
@@ -63,8 +72,11 @@ export function ListingsProvider({ children }) {
     setListings((prev) => prev.filter((l) => l.id !== id));
   };
 
+  const visibleListings = listings.filter((l) => !l.hidden);
+
   const value = {
     listings,
+    visibleListings,
     loading,
     error,
     refresh: fetchListings,

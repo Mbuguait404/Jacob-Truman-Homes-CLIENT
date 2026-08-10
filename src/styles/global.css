@@ -1331,6 +1331,23 @@
   border-style: dashed;
   color: #6a7e92;
 }
+.jth-fallback-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.jth-fallback-notice svg {
+  flex-shrink: 0;
+  color: #c2410c;
+}
+
 .jth-filters__count {
   display: flex;
   align-items: center;
@@ -1932,6 +1949,47 @@
 .jth-enquiry__form .jth-btn {
   margin-top: 4px;
   border-radius: 4px;
+}
+.jth-enquiry__listing-ref {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  padding: 14px 16px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+.jth-enquiry__listing-ref svg {
+  color: var(--terracotta);
+  flex-shrink: 0;
+}
+.jth-enquiry__listing-ref div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.jth-enquiry__listing-ref strong {
+  font-family: "Fraunces", serif;
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.jth-enquiry__listing-ref span {
+  font-size: 13px;
+  color: #5a6e82;
+}
+.jth-enquiry__listing-ref a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--terracotta);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.jth-enquiry__listing-ref a:hover {
+  text-decoration: underline;
 }
 .jth-enquiry__success {
   text-align: center;

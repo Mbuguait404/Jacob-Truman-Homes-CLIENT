@@ -210,18 +210,127 @@
   justify-content: flex-end;
 }
 
+/* ---- Mobile admin header ---- */
+.jth-admin__mobile-header {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .jth-admin {
     grid-template-columns: 1fr;
   }
+  .jth-admin__mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--coffee);
+    position: sticky;
+    top: 0;
+    z-index: 60;
+  }
+  .jth-admin__mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Fraunces", serif;
+    color: #fff;
+    font-size: 16px;
+  }
+  .jth-admin__mobile-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .jth-admin__sidebar {
-    position: relative;
-    height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
+    position: fixed;
+    inset: 0;
+    right: auto;
+    width: 260px;
+    z-index: 70;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    height: 100vh;
+    flex-direction: column;
+  }
+  .jth-admin__sidebar--open {
+    transform: translateX(0);
+  }
+  .jth-admin__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 65;
+  }
+  .jth-admin__main {
+    padding: 20px 18px;
+  }
+  .jth-admin__title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+  .jth-admin__title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .jth-admin__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .jth-admin__stat {
+    padding: 16px;
+  }
+  .jth-admin__stat strong {
+    font-size: 22px;
+  }
+  .jth-admin__panel {
+    padding: 18px;
+    overflow-x: auto;
+  }
+  .jth-admin__table {
+    min-width: 640px;
   }
   .jth-admin__form-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .jth-admin__form label {
+    margin-bottom: 12px;
+  }
+  .jth-admin__image-preview {
+    width: 80px;
+    height: 80px;
+  }
+  .jth-admin__filters {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .jth-admin__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .jth-admin__form-grid {
+    grid-template-columns: 1fr;
+  }
+  .jth-admin__form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .jth-admin__form-actions .jth-btn {
+    justify-content: center;
+  }
+  .jth-admin__row-actions {
+    gap: 6px;
   }
 }
 
@@ -235,6 +344,12 @@
   gap: 14px;
   font-family: "Work Sans", sans-serif;
   color: var(--ink);
+  padding: 0 20px;
+}
+@media (max-width: 560px) {
+  .jth-admin-login {
+    margin: 60px auto;
+  }
 }
 .jth-admin-login h2 {
   font-size: 24px;
@@ -340,4 +455,157 @@
   font-size: 13px;
   padding: 8px 12px;
   border: 1px solid var(--line);
+}
+
+/* ---- Toggle checkboxes ---- */
+.jth-admin__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row !important;
+  font-size: 13px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--ink) !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+.jth-admin__toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--terracotta);
+  cursor: pointer;
+}
+
+/* ---- Badges ---- */
+.jth-admin__hidden-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: #7a8ea2;
+  background: #eef1f6;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.jth-admin__featured-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--terracotta-dark);
+  background: rgba(201, 162, 39, 0.12);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ---- Hidden row ---- */
+.jth-admin__row--hidden td {
+  opacity: 0.65;
+}
+
+/* ---- Preview Modal ---- */
+.jth-admin__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.jth-admin__modal {
+  background: #fff;
+  border-radius: 6px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+.jth-admin__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+}
+.jth-admin__modal-header h3 {
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  margin: 0;
+}
+.jth-admin__modal-header button {
+  background: none;
+  border: none;
+  color: #6a7e92;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jth-admin__modal-header button:hover {
+  color: var(--ink);
+}
+.jth-admin__modal-body {
+  padding: 24px;
+}
+.jth-admin__modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #5a6e82;
+}
+.jth-admin__modal-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.jth-admin__modal-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #3a5068;
+  margin-bottom: 20px;
+}
+.jth-admin__modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.jth-admin__modal-thumb {
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.jth-admin__modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.jth-admin__modal-empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6a7e92;
+  font-size: 13px;
+  padding: 20px 0;
+}
+
+@media (max-width: 560px) {
+  .jth-admin__modal-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
