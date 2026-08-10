@@ -5,6 +5,7 @@ import Img from "../components/common/Img";
 import Seal from "../components/common/Seal";
 import { StatusBadge, SpecRow, Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
+import RevealOnScroll from "../components/common/RevealOnScroll";
 import { useListings } from "../context/ListingsContext";
 import { formatPrice } from "../utils/format";
 
@@ -123,15 +124,17 @@ export default function ListingDetailPage() {
       </div>
 
       {related.length > 0 && (
-        <section className="jth-section">
-          <Eyebrow>Related homes</Eyebrow>
-          <h2>More in {listing.city}</h2>
-          <div className="jth-listings-grid">
-            {related.map((l) => (
-              <ListingCard key={l.id} listing={l} />
-            ))}
-          </div>
-        </section>
+        <RevealOnScroll delay={100}>
+          <section className="jth-section">
+            <Eyebrow>Related homes</Eyebrow>
+            <h2>More in {listing.city}</h2>
+            <div className="jth-listings-grid">
+              {related.map((l) => (
+                <ListingCard key={l.id} listing={l} />
+              ))}
+            </div>
+          </section>
+        </RevealOnScroll>
       )}
     </div>
   );

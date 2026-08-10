@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home, AlertTriangle 
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
+import RevealOnScroll from "../components/common/RevealOnScroll";
 import { useListings } from "../context/ListingsContext";
 import { CITIES } from "../data/listings";
 
@@ -114,18 +115,20 @@ export default function ListingsPage() {
           </div>
         </div>
 
-        <div className="jth-listings-grid">
-          {filtered.map((l) => (
-            <ListingCard key={l.id} listing={l} />
-          ))}
-          {filtered.length === 0 && (
-            <div className="jth-empty">
-              <Search size={32} />
-              <h3>No homes match those filters</h3>
-              <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
-            </div>
-          )}
-        </div>
+        <RevealOnScroll delay={80}>
+          <div className="jth-listings-grid">
+            {filtered.map((l) => (
+              <ListingCard key={l.id} listing={l} />
+            ))}
+            {filtered.length === 0 && (
+              <div className="jth-empty">
+                <Search size={32} />
+                <h3>No homes match those filters</h3>
+                <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
+              </div>
+            )}
+          </div>
+        </RevealOnScroll>
       </div>
     </>
   );

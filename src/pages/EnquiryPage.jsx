@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Check, Send, Phone, Mail, Globe, MapPin, Home } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
+import RevealOnScroll from "../components/common/RevealOnScroll";
 import { api } from "../api/client";
 import { useListings } from "../context/ListingsContext";
 
@@ -50,6 +51,7 @@ export default function EnquiryPage({ mode }) {
   };
 
   return (
+    <RevealOnScroll delay={80}>
     <div className="jth-enquiry">
       <div className="jth-enquiry__side">
         <div className="jth-enquiry__side-text">
@@ -146,5 +148,6 @@ export default function EnquiryPage({ mode }) {
         )}
       </div>
     </div>
+    </RevealOnScroll>
   );
 }

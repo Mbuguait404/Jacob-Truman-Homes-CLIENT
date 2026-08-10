@@ -363,14 +363,62 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   margin-top: 10px;
 }
-.jth-admin-login input {
-  padding: 12px;
+.jth-admin-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+.jth-admin-login__field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5a6e82;
+  font-weight: 600;
+}
+.jth-admin-login__field input {
+  padding: 12px 14px;
   border: 1px solid var(--line);
   font-family: inherit;
   font-size: 14px;
+  border-radius: 4px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+.jth-admin-login__field input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(176, 83, 46, 0.1);
+}
+.jth-admin-login__password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.jth-admin-login__password-wrap input {
+  padding-right: 42px;
+}
+.jth-admin-login__toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6a7e92;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+.jth-admin-login__toggle:hover {
+  color: var(--ink);
 }
 .jth-admin-login__exit {
   margin-top: 6px;

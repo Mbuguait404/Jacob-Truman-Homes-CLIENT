@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ListingsProvider } from "./context/ListingsContext";
 import { AdminAuthProvider } from "./admin/AdminAuthContext";
 
+import ScrollToTop from "./components/common/ScrollToTop";
 import SiteLayout from "./components/layout/SiteLayout";
 import HomePage from "./pages/HomePage";
 import ListingsPage from "./pages/ListingsPage";
@@ -24,6 +25,7 @@ export default function App() {
     <ListingsProvider>
       <AdminAuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             {/* Public site */}
             <Route element={<SiteLayout />}>

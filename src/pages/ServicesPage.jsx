@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Img from "../components/common/Img";
+import RevealOnScroll from "../components/common/RevealOnScroll";
 import {
   Building2,
   Home,
@@ -112,63 +113,69 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="jth-section">
-        <div className="jth-services-page__grid">
-          {SERVICES.map((s) => {
-            const Icon = s.icon;
-            return (
-              <div className="jth-service-page-card" key={s.title}>
-                <div className="jth-service-page-card__icon">
-                  <Icon size={28} />
+      <RevealOnScroll delay={100}>
+        <section className="jth-section">
+          <div className="jth-services-page__grid">
+            {SERVICES.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div className="jth-service-page-card" key={s.title}>
+                  <div className="jth-service-page-card__icon">
+                    <Icon size={28} />
+                  </div>
+                  <h3>{s.title}</h3>
+                  <p>{s.description}</p>
+                  <Link className="jth-link" to={s.to}>
+                    {s.cta} <ChevronRight size={15} />
+                  </Link>
                 </div>
-                <h3>{s.title}</h3>
-                <p>{s.description}</p>
-                <Link className="jth-link" to={s.to}>
-                  {s.cta} <ChevronRight size={15} />
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Why work with us */}
-      <section className="jth-section jth-services-why">
-        <div className="jth-services-why__head">
-          <Eyebrow>The difference</Eyebrow>
-          <h2>Why work with Jacob Truman Properties?</h2>
-        </div>
-        <div className="jth-services-why__grid">
-          {[
-            "Personalized customer service",
-            "Wide portfolio of verified properties",
-            "Professional marketing and photography",
-            "Honest and transparent transactions",
-            "Strong knowledge of the Kenyan property market",
-            "End-to-end support from inquiry to completion",
-          ].map((item) => (
-            <div key={item} className="jth-services-why__item">
-              <ArrowRight size={16} /> {item}
-            </div>
-          ))}
-        </div>
-      </section>
+      <RevealOnScroll delay={100}>
+        <section className="jth-section jth-services-why">
+          <div className="jth-services-why__head">
+            <Eyebrow>The difference</Eyebrow>
+            <h2>Why work with Jacob Truman Properties?</h2>
+          </div>
+          <div className="jth-services-why__grid">
+            {[
+              "Personalized customer service",
+              "Wide portfolio of verified properties",
+              "Professional marketing and photography",
+              "Honest and transparent transactions",
+              "Strong knowledge of the Kenyan property market",
+              "End-to-end support from inquiry to completion",
+            ].map((item) => (
+              <div key={item} className="jth-services-why__item">
+                <ArrowRight size={16} /> {item}
+              </div>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* CTA */}
-      <section className="jth-cta-band">
-        <h2>Ready to get started?</h2>
-        <p style={{ color: "rgba(255,255,255,0.8)", maxWidth: "560px", margin: "0 auto 28px", fontSize: "16px" }}>
-          Tell us what you need and we'll match you with the right service and the right property.
-        </p>
-        <div className="jth-hero__actions">
-          <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/sell")}>
-            Sell with us
-          </button>
-          <button className="jth-btn jth-btn--outline-light jth-btn--lg" onClick={() => navigate("/buy")}>
-            Buy or rent
-          </button>
-        </div>
-      </section>
+      <RevealOnScroll delay={100}>
+        <section className="jth-cta-band">
+          <h2>Ready to get started?</h2>
+          <p style={{ color: "rgba(255,255,255,0.8)", maxWidth: "560px", margin: "0 auto 28px", fontSize: "16px" }}>
+            Tell us what you need and we'll match you with the right service and the right property.
+          </p>
+          <div className="jth-hero__actions">
+            <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/sell")}>
+              Sell with us
+            </button>
+            <button className="jth-btn jth-btn--outline-light jth-btn--lg" onClick={() => navigate("/buy")}>
+              Buy or rent
+            </button>
+          </div>
+        </section>
+      </RevealOnScroll>
     </div>
   );
 }

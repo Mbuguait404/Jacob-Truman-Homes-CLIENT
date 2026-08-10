@@ -3,6 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import FloatingSocials from "../common/FloatingSocials";
 
 export default function SiteLayout() {
   return (
@@ -15,6 +16,7 @@ export default function SiteLayout() {
       <Link to="/admin" className="jth-admin-fab" title="Admin portal">
         <ShieldCheck size={16} /> Admin
       </Link>
+      <FloatingSocials />
     </div>
   );
 }

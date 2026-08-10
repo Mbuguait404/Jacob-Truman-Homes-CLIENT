@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import Seal from "../components/common/Seal";
 import { useAdminAuth } from "./AdminAuthContext";
 import { loginAdmin } from "../api/client";
@@ -9,6 +10,7 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,28 +37,46 @@ export default function AdminLogin() {
       <p>Sign in with your admin credentials.</p>
       <form onSubmit={handleSubmit}>
         {error && <div className="jth-admin-login__error">{error}</div>}
-        <label>
-          Email
+
+        <div className="jth-admin-login__field">
+          <label htmlFor="admin-email">Email</label>
           <input
+            id="admin-email"
             type="email"
             name="email"
             placeholder="admin@jacobtrumanhomes.co.ke"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
+        </div>
+
+        <div className="jth-admin-login__field">
+          <label htmlFor="admin-password">Password</label>
+          <div className="jth-admin-login__password-wrap">
+            <input
+              id="admin-password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="••••••••"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="jth-admin-login__toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+        </div>
+
         <button
           className="jth-btn jth-btn--primary jth-btn--block"
           type="submit"
