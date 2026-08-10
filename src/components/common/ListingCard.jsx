@@ -7,10 +7,13 @@ import { StatusBadge, SpecRow } from "./SmallBits";
 import { formatPrice } from "../../utils/format";
 
 export default function ListingCard({ listing, size = "md" }) {
+  const imageSrc = listing.images?.[0] || null;
+  const imageSeed = !imageSrc ? (listing.seed || "default") : null;
+
   return (
     <Link to={`/listings/${listing.id}`} className={`jth-card jth-card--${size}`}>
       <div className="jth-card__media">
-        <Img seed={listing.seed} w={900} h={size === "lg" ? 720 : 620} alt={listing.title} />
+        <Img src={imageSrc} seed={imageSeed} w={900} h={size === "lg" ? 720 : 620} alt={listing.title} />
         <div className="jth-card__seal">
           <Seal size={54} />
         </div>

@@ -1,42 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, ChevronRight, Building2, Home, Landmark, ShieldCheck, TrendingUp, Megaphone, Quote } from "lucide-react";
+import { ArrowRight, ChevronRight, Building2, Home, Landmark, ShieldCheck, TrendingUp, Megaphone, Calculator, Users, Quote } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import { useListings } from "../context/ListingsContext";
 import { TESTIMONIALS } from "../data/testimonials";
 import { PROCESS_STEPS } from "../data/process";
+import { CITIES } from "../data/listings";
 
 export default function HomePage() {
   const { listings } = useListings();
   const navigate = useNavigate();
+  const [searchCity, setSearchCity] = useState("All Regions");
+  const [searchType, setSearchType] = useState("All Types");
   const featured = listings.filter((l) => l.featured);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchCity !== "All Regions") params.set("city", searchCity);
+    if (searchType !== "All Types") params.set("type", searchType);
+    const query = params.toString();
+    navigate(query ? `/listings?${query}` : "/listings");
+  };
 
   return (
     <>
       <section className="jth-hero">
-        <div className="jth-hero__grid">
-          <Img seed="hero-main" w={1200} h={1500} className="jth-hero__img jth-hero__img--a" />
-          <Img seed="hero-b" w={900} h={700} className="jth-hero__img jth-hero__img--b" />
-          <Img seed="hero-c" w={900} h={700} className="jth-hero__img jth-hero__img--c" />
+        <div className="jth-hero__bg">
+          <Img seed="hero-main" w={1600} h={1000} className="jth-hero__bg-img" loading="eager" />
         </div>
         <div className="jth-hero__scrim" />
         <div className="jth-hero__content">
-          <Eyebrow>Across Kenya · Est. 2011</Eyebrow>
-          <h1>
-            Your trusted partner
-            <br />
-            in Kenyan real
-            <br />
-            estate.
-          </h1>
-          <p>We specialise in the sale, letting, management and investment advisory of residential, commercial and land properties across Kenya — with transparency, integrity and exceptional service.</p>
+          <div className="jth-hero__text">
+            <Eyebrow>Across Kenya · Est. 2011</Eyebrow>
+            <h1>Find your place in Kenya</h1>
+            <p>Sale, letting, management and investment advisory of residential, commercial and land properties — with exceptional service, transparency and value.</p>
+          </div>
+
+          <div className="jth-hero__search">
+            <div className="jth-hero__search-field">
+              <label>Location</label>
+              <select value={searchCity} onChange={(e) => setSearchCity(e.target.value)}>
+                <option>All Regions</option>
+                {CITIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            <div className="jth-hero__search-divider" />
+            <div className="jth-hero__search-field">
+              <label>Type</label>
+              <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+                <option>All Types</option>
+                <option>For Sale</option>
+                <option>For Rent</option>
+              </select>
+            </div>
+            <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
+
           <div className="jth-hero__actions">
             <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/listings")}>
               Browse listings <ArrowRight size={16} />
             </button>
-            <button className="jth-btn jth-btn--outline jth-btn--lg" onClick={() => navigate("/sell")}>
+            <button className="jth-btn jth-btn--outline-light jth-btn--lg" onClick={() => navigate("/sell")}>
               Sell with us
             </button>
           </div>
@@ -44,10 +74,20 @@ export default function HomePage() {
       </section>
 
       <section className="jth-section jth-strip">
-        <div className="jth-strip__item"><strong>240+</strong><span>Homes placed since 2011</span></div>
-        <div className="jth-strip__item"><strong>4+</strong><span>Regions — across Kenya</span></div>
-        <div className="jth-strip__item"><strong>18 days</strong><span>Average time to let</span></div>
-        <div className="jth-strip__item"><strong>4.9 / 5</strong><span>Client satisfaction</span></div>
+        {[
+          { num: "240+", label: "Homes placed since 2011" },
+          { num: "4+", label: "Regions across Kenya" },
+          { num: "18 days", label: "Average time to let" },
+          { num: "4.9 / 5", label: "Client satisfaction" },
+        ].map((s, i) => (
+          <React.Fragment key={s.label}>
+            {i > 0 && <div className="jth-strip__divider" />}
+            <div className="jth-strip__item">
+              <strong>{s.num}</strong>
+              <span>{s.label}</span>
+            </div>
+          </React.Fragment>
+        ))}
       </section>
 
       <section className="jth-section">
@@ -116,10 +156,26 @@ export default function HomePage() {
           </div>
           <div className="jth-service-card">
             <Megaphone size={26} />
-            <h3>Property Marketing &amp; Valuation</h3>
-            <p>Professional photography, targeted marketing, and reliable valuation support for your property.</p>
+            <h3>Property Marketing</h3>
+            <p>Professional photography, targeted marketing, and creative campaigns to showcase your property.</p>
             <Link className="jth-link" to="/sell">
               Market your property <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="jth-service-card">
+            <Calculator size={26} />
+            <h3>Property Valuation Support</h3>
+            <p>Reliable valuation support and market analysis to ensure your property is priced competitively.</p>
+            <Link className="jth-link" to="/sell">
+              Request valuation <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="jth-service-card">
+            <Users size={26} />
+            <h3>Project Marketing for Developers</h3>
+            <p>End-to-end marketing solutions for residential and commercial development projects.</p>
+            <Link className="jth-link" to="/sell">
+              Partner with us <ChevronRight size={15} />
             </Link>
           </div>
         </div>
@@ -133,9 +189,12 @@ export default function HomePage() {
           </div>
         </div>
         <div className="jth-process__grid">
-          {PROCESS_STEPS.map((s) => (
+          {PROCESS_STEPS.map((s, i) => (
             <div className="jth-process__step" key={s.n}>
-              <span className="jth-process__n">{s.n}</span>
+              <div className="jth-process__marker">
+                <span className="jth-process__n">{s.n}</span>
+                {i < PROCESS_STEPS.length - 1 && <div className="jth-process__connector" />}
+              </div>
               <h3>{s.title}</h3>
               <p>{s.body}</p>
             </div>
@@ -161,15 +220,25 @@ export default function HomePage() {
       </section>
 
       <section className="jth-section jth-testimonials">
-        <Eyebrow>In their words</Eyebrow>
+        <div className="jth-testimonials__head">
+          <Eyebrow>In their words</Eyebrow>
+          <h2>Trusted by homeowners & investors</h2>
+        </div>
         <div className="jth-testimonials__grid">
           {TESTIMONIALS.map((t) => (
             <div className="jth-testimonial" key={t.name}>
-              <Quote size={22} />
+              <div className="jth-testimonial__quote-mark">
+                <Quote size={32} />
+              </div>
               <p>{t.quote}</p>
               <div className="jth-testimonial__who">
-                <strong>{t.name}</strong>
-                <span>{t.role}</span>
+                <div className="jth-testimonial__avatar">
+                  <Img seed={`avatar-${t.name.toLowerCase().replace(/\s+/g, "-")}`} w={48} h={48} alt={t.name} />
+                </div>
+                <div className="jth-testimonial__meta">
+                  <strong>{t.name}</strong>
+                  <span>{t.role}</span>
+                </div>
               </div>
             </div>
           ))}
@@ -177,7 +246,10 @@ export default function HomePage() {
       </section>
 
       <section className="jth-cta-band">
-        <h2>Ready to buy, sell, let or invest in Kenyan property?</h2>
+        <h2>Every property represents an opportunity.</h2>
+        <p style={{ color: "rgba(255,255,255,0.8)", maxWidth: "560px", margin: "0 auto 28px", fontSize: "16px" }}>
+          Let us help you make your next move with confidence. Our experienced team is dedicated to making the process seamless and rewarding.
+        </p>
         <div className="jth-hero__actions">
           <button className="jth-btn jth-btn--primary jth-btn--lg" onClick={() => navigate("/sell")}>
             Sell with us

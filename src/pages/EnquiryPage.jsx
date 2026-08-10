@@ -1,29 +1,79 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, Send, Phone, Mail, Globe, MapPin } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
+import { api } from "../api/client";
 
 export default function EnquiryPage({ mode }) {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const isSell = mode === "sell";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const form = e.target;
+    const payload = {
+      type: mode,
+      name: form.elements.name.value,
+      phone: form.elements.phone.value,
+      email: form.elements.email.value || undefined,
+      location: form.elements.location.value || undefined,
+      message: form.elements.message.value || undefined,
+    };
+
+    try {
+      await api.post("/enquiries", payload);
+      setSent(true);
+    } catch (err) {
+      alert(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="jth-enquiry">
       <div className="jth-enquiry__side">
-        <Eyebrow>{isSell ? "Sell with us" : "Buy or rent with us"}</Eyebrow>
-        <h1>{isSell ? "Tell us about your home" : "Tell us what you're looking for"}</h1>
-        <p>
-          {isSell
-            ? "A member of our team will call within one business day to arrange a free valuation."
-            : "Share your brief and we'll shortlist matching properties across Kenya."}
-        </p>
-        <Img seed={isSell ? "sell-enquiry" : "buy-enquiry"} w={800} h={600} />
+        <div className="jth-enquiry__side-text">
+          <Eyebrow>{isSell ? "Sell with us" : "Buy or rent with us"}</Eyebrow>
+          <h1>{isSell ? "Tell us about your home" : "Tell us what you're looking for"}</h1>
+          <p>
+            {isSell
+              ? "A member of our team will call within one business day to arrange a free valuation."
+              : "Share your brief and we'll shortlist matching properties across Kenya."}
+          </p>
+        </div>
+        <div className="jth-enquiry__side-visual">
+          <Img seed={isSell ? "sell-enquiry" : "buy-enquiry"} w={800} h={600} />
+          <div className="jth-enquiry__contact-box">
+            <div className="jth-enquiry__contact-row">
+              <Phone size={16} />
+              <span>0718 806741 | 0100201010</span>
+            </div>
+            <div className="jth-enquiry__contact-row">
+              <Mail size={16} />
+              <span>info@trumanproperties.com</span>
+            </div>
+            <div className="jth-enquiry__contact-row">
+              <Globe size={16} />
+              <span>www.trumanproperties.com</span>
+            </div>
+            <div className="jth-enquiry__contact-row">
+              <MapPin size={16} />
+              <span>Nairobi, Kenya</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="jth-enquiry__form">
         {sent ? (
           <div className="jth-enquiry__success">
-            <Check size={28} />
+            <div className="jth-enquiry__success-icon">
+              <Check size={32} />
+            </div>
             <h3>Thank you — we've received this.</h3>
             <p>Someone from Jacob Truman Properties will be in touch shortly.</p>
             <Link className="jth-btn jth-btn--outline" to="/">
@@ -31,34 +81,29 @@ export default function EnquiryPage({ mode }) {
             </Link>
           </div>
         ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-          >
+          <form onSubmit={handleSubmit}>
             <label>
               Full name
-              <input required placeholder="Your name" />
+              <input name="name" required placeholder="Your name" />
             </label>
             <label>
               Phone
-              <input required placeholder="+254 7..." />
+              <input name="phone" required placeholder="+254 7..." />
             </label>
             <label>
               Email
-              <input type="email" placeholder="you@example.com" />
+              <input name="email" type="email" placeholder="you@example.com" />
             </label>
             <label>
               {isSell ? "Property location" : "Preferred city / area"}
-              <input placeholder="e.g. Karen, Nairobi" />
+              <input name="location" placeholder="e.g. Karen, Nairobi" />
             </label>
             <label>
               {isSell ? "Tell us about the property" : "What are you looking for?"}
-              <textarea rows={4} placeholder={isSell ? "Bedrooms, size, condition..." : "Budget, bedrooms, timeline..."} />
+              <textarea name="message" rows={4} placeholder={isSell ? "Bedrooms, size, condition..." : "Budget, bedrooms, timeline..."} />
             </label>
-            <button className="jth-btn jth-btn--primary jth-btn--block" type="submit">
-              Submit enquiry
+            <button className="jth-btn jth-btn--primary jth-btn--block" type="submit" disabled={submitting}>
+              <Send size={16} /> {submitting ? "Sending…" : "Submit enquiry"}
             </button>
           </form>
         )}

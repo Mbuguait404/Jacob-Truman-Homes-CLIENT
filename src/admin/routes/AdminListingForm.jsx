@@ -1,49 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Upload, X } from "lucide-react";
 import { useListings } from "../../context/ListingsContext";
+import { api } from "../../api/client";
 import { CITIES } from "../../data/listings";
 
 const BLANK_FORM = {
   title: "", city: "Nairobi", neighborhood: "", price: "", listingType: "For Sale",
   propertyType: "Apartment", beds: 2, baths: 1, area: "", status: "Available",
-  description: "", amenities: "", seed: "",
+  description: "", amenities: "", images: [],
 };
 
 export default function AdminListingForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { listings, addListing, updateListing } = useListings();
+  const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
 
   const existing = id ? listings.find((l) => String(l.id) === id) : null;
   const [form, setForm] = useState(
     existing
-      ? { ...existing, amenities: existing.amenities.join(", ") }
+      ? {
+          ...existing,
+          amenities: Array.isArray(existing.amenities)
+            ? existing.amenities.join(", ")
+            : existing.amenities || "",
+          images: existing.images || [],
+        }
       : BLANK_FORM
   );
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const data = new FormData();
+      data.append("image", file);
+      const res = await api.upload("/uploads", data);
+      setForm((prev) => ({ ...prev, images: [...prev.images, res.url] }));
+    } catch (err) {
+      alert(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const removeImage = (idx) => {
+    setForm((prev) => ({ ...prev, images: prev.images.filter((_, i) => i !== idx) }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
       ...form,
-      id: existing ? existing.id : undefined,
       price: Number(form.price) || 0,
       beds: Number(form.beds) || 0,
       baths: Number(form.baths) || 0,
       area: Number(form.area) || 0,
       featured: existing ? existing.featured : false,
-      seed: form.seed || `listing-${Date.now()}`,
       amenities: String(form.amenities)
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean),
     };
 
-    if (existing) updateListing(payload);
-    else addListing(payload);
-
-    navigate("/admin/listings");
+    try {
+      if (existing) {
+        await updateListing({ ...payload, _id: existing._id, id: existing.id });
+      } else {
+        await addListing(payload);
+      }
+      navigate("/admin/listings");
+    } catch (err) {
+      alert(err.message || "Save failed");
+    }
   };
 
   return (
@@ -117,6 +152,40 @@ export default function AdminListingForm() {
             Amenities (comma separated)
             <input value={form.amenities} onChange={set("amenities")} />
           </label>
+
+          <label>
+            Images
+            <div className="jth-admin__image-upload">
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+              />
+              <button
+                type="button"
+                className="jth-btn jth-btn--outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+              >
+                <Upload size={15} /> {uploading ? "Uploading…" : "Upload image"}
+              </button>
+            </div>
+            {form.images.length > 0 && (
+              <div className="jth-admin__image-previews">
+                {form.images.map((url, i) => (
+                  <div key={url + i} className="jth-admin__image-preview">
+                    <img src={url} alt="" />
+                    <button type="button" onClick={() => removeImage(i)} title="Remove">
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </label>
+
           <div className="jth-admin__form-actions">
             <button type="button" className="jth-btn jth-btn--outline" onClick={() => navigate("/admin/listings")}>
               Cancel

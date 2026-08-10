@@ -4,7 +4,7 @@ import { StatusBadge } from "../../components/common/SmallBits";
 import { useListings } from "../../context/ListingsContext";
 
 export default function AdminDashboard() {
-  const { listings } = useListings();
+  const { listings, loading } = useListings();
   const total = listings.length;
   const available = listings.filter((l) => l.status === "Available").length;
   const sold = listings.filter((l) => l.status === "Sold").length;
@@ -37,28 +37,37 @@ export default function AdminDashboard() {
       </div>
       <div className="jth-admin__panel">
         <h3>Recent listings</h3>
-        <table className="jth-admin__table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>City</th>
-              <th>Type</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listings.slice(0, 6).map((l) => (
-              <tr key={l.id}>
-                <td>{l.title}</td>
-                <td>{l.city}</td>
-                <td>{l.listingType}</td>
-                <td>
-                  <StatusBadge status={l.status} />
-                </td>
+        {loading ? (
+          <p>Loading listings…</p>
+        ) : (
+          <table className="jth-admin__table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>City</th>
+                <th>Type</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {listings.slice(0, 6).map((l) => (
+                <tr key={l.id}>
+                  <td>{l.title}</td>
+                  <td>{l.city}</td>
+                  <td>{l.listingType}</td>
+                  <td>
+                    <StatusBadge status={l.status} />
+                  </td>
+                </tr>
+              ))}
+              {listings.length === 0 && (
+                <tr>
+                  <td colSpan="4">No listings yet.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

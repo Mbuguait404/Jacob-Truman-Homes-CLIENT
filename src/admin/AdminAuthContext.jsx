@@ -1,15 +1,37 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { getAdminUser, logoutAdmin, api } from "../api/client";
 
 const AdminAuthContext = createContext(null);
 
 export function AdminAuthProvider({ children }) {
-  const [adminName, setAdminName] = useState(null);
+  const [admin, setAdmin] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (name) => setAdminName(name || "Admin");
-  const logout = () => setAdminName(null);
+  useEffect(() => {
+    const user = getAdminUser();
+    if (user) {
+      // Validate token is still good by calling /me
+      api
+        .get("/auth/me")
+        .then((data) => setAdmin(data.admin))
+        .catch(() => {
+          logoutAdmin();
+          setAdmin(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const login = (adminData) => setAdmin(adminData);
+  const logout = () => {
+    logoutAdmin();
+    setAdmin(null);
+  };
 
   return (
-    <AdminAuthContext.Provider value={{ adminName, login, logout }}>
+    <AdminAuthContext.Provider value={{ admin, login, logout, loading }}>
       {children}
     </AdminAuthContext.Provider>
   );

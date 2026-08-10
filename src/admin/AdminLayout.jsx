@@ -1,20 +1,29 @@
 import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Building2, PlusCircle } from "lucide-react";
+import { LayoutDashboard, Building2, PlusCircle, Mail } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 import AdminLogin from "./AdminLogin";
 import "../styles/admin.css";
 
 export default function AdminLayout() {
-  const { adminName, logout } = useAdminAuth();
+  const { admin, logout, loading } = useAdminAuth();
   const navigate = useNavigate();
 
-  if (!adminName) return <AdminLogin />;
+  if (loading) {
+    return (
+      <div className="jth-admin-login">
+        <p>Loading…</p>
+      </div>
+    );
+  }
+
+  if (!admin) return <AdminLogin />;
 
   const nav = [
     ["/admin/dashboard", "Dashboard", <LayoutDashboard size={17} key="i" />],
     ["/admin/listings", "Listings", <Building2 size={17} key="i" />],
     ["/admin/listings/new", "Add listing", <PlusCircle size={17} key="i" />],
+    ["/admin/enquiries", "Enquiries", <Mail size={17} key="i" />],
   ];
 
   return (
@@ -25,16 +34,16 @@ export default function AdminLayout() {
         </div>
         <nav>
           {nav.map(([to, label, icon]) => (
-            <NavLink key={to} to={to} end>
+            <NavLink key={to} to={to} end={to === "/admin/dashboard" ? true : false}>
               {icon}
               {label}
             </NavLink>
           ))}
         </nav>
         <div className="jth-admin__sidebar-foot">
-          <div className="jth-admin__avatar">{adminName?.[0]?.toUpperCase() || "A"}</div>
+          <div className="jth-admin__avatar">{admin.name?.[0]?.toUpperCase() || "A"}</div>
           <div>
-            <strong>{adminName}</strong>
+            <strong>{admin.name}</strong>
             <span>Administrator</span>
           </div>
         </div>

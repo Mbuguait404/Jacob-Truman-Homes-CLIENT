@@ -1,6 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import { useListings } from "../context/ListingsContext";
@@ -14,11 +14,21 @@ export default function ListingsPage() {
   const type = searchParams.get("type") || "All";
   const beds = searchParams.get("beds") || "Any";
 
+  const activeFilters = [
+    city !== "All" && { key: "city", label: city },
+    type !== "All" && { key: "type", label: type },
+    beds !== "Any" && { key: "beds", label: `${beds} beds+` },
+  ].filter(Boolean);
+
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
     if (value === "All" || value === "Any") next.delete(key);
     else next.set(key, value);
     setSearchParams(next);
+  };
+
+  const clearFilters = () => {
+    setSearchParams(new URLSearchParams());
   };
 
   const filtered = listings.filter((l) => {
@@ -29,55 +39,78 @@ export default function ListingsPage() {
   });
 
   return (
-    <div className="jth-page-header-wrap">
-      <div className="jth-page-header">
-        <Eyebrow>Listings</Eyebrow>
-        <h1>{filtered.length} homes across Nairobi &amp; Eldoret</h1>
-      </div>
-
-      <div className="jth-filters">
-        <div className="jth-filters__group">
-          <label>City</label>
-          <select value={city} onChange={(e) => updateParam("city", e.target.value)}>
-            <option>All</option>
-            {CITIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-        <div className="jth-filters__group">
-          <label>Type</label>
-          <select value={type} onChange={(e) => updateParam("type", e.target.value)}>
-            <option>All</option>
-            <option>For Sale</option>
-            <option>For Rent</option>
-          </select>
-        </div>
-        <div className="jth-filters__group">
-          <label>Minimum beds</label>
-          <select value={beds} onChange={(e) => updateParam("beds", e.target.value)}>
-            <option>Any</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
-            <option value="4">4+</option>
-          </select>
-        </div>
-        <div className="jth-filters__count">
-          <Search size={14} /> {filtered.length} results
+    <>
+      <div className="jth-listings-hero">
+        <div className="jth-listings-hero__content">
+          <Eyebrow>Browse</Eyebrow>
+          <h1>{filtered.length} {filtered.length === 1 ? "home" : "homes"} across Kenya</h1>
+          <p>Verified properties for sale, rent and investment across Nairobi, Kiambu, Eldoret, Kajiado and beyond.</p>
         </div>
       </div>
 
-      <div className="jth-listings-grid">
-        {filtered.map((l) => (
-          <ListingCard key={l.id} listing={l} />
-        ))}
-        {filtered.length === 0 && (
-          <div className="jth-empty">
-            No homes match those filters yet. Try widening your search, or tell us what you're after and we'll look for it.
+      <div className="jth-page-header-wrap">
+        <div className="jth-filters">
+          <div className="jth-filters__bar">
+            <div className="jth-filters__group">
+              <label>City</label>
+              <select value={city} onChange={(e) => updateParam("city", e.target.value)}>
+                <option>All</option>
+                {CITIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            <div className="jth-filters__group">
+              <label>Type</label>
+              <select value={type} onChange={(e) => updateParam("type", e.target.value)}>
+                <option>All</option>
+                <option>For Sale</option>
+                <option>For Rent</option>
+              </select>
+            </div>
+            <div className="jth-filters__group">
+              <label>Minimum beds</label>
+              <select value={beds} onChange={(e) => updateParam("beds", e.target.value)}>
+                <option>Any</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+            </div>
           </div>
-        )}
+          <div className="jth-filters__meta">
+            {activeFilters.length > 0 && (
+              <div className="jth-filters__tags">
+                {activeFilters.map((f) => (
+                  <button key={f.key} className="jth-filter-tag" onClick={() => updateParam(f.key, f.key === "beds" ? "Any" : "All")}>
+                    {f.label} <X size={12} />
+                  </button>
+                ))}
+                <button className="jth-filter-tag jth-filter-tag--clear" onClick={clearFilters}>
+                  Clear all
+                </button>
+              </div>
+            )}
+            <div className="jth-filters__count">
+              <SlidersHorizontal size={14} /> {filtered.length} {filtered.length === 1 ? "home" : "homes"}
+            </div>
+          </div>
+        </div>
+
+        <div className="jth-listings-grid">
+          {filtered.map((l) => (
+            <ListingCard key={l.id} listing={l} />
+          ))}
+          {filtered.length === 0 && (
+            <div className="jth-empty">
+              <Search size={32} />
+              <h3>No homes match those filters</h3>
+              <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

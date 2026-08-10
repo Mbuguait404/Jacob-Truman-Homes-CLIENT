@@ -1,27 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Seal from "../components/common/Seal";
 import { useAdminAuth } from "./AdminAuthContext";
+import { loginAdmin } from "../api/client";
 
 export default function AdminLogin() {
   const { login } = useAdminAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(e.target.elements.name.value);
-    navigate("/admin/dashboard");
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const data = await loginAdmin({ email, password });
+      login(data.admin);
+      navigate("/admin/dashboard");
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="jth-admin-login">
       <Seal size={70} />
       <h2>Admin portal</h2>
-      <p>This is a prototype — no password required. Enter any name to continue.</p>
+      <p>Sign in with your admin credentials.</p>
       <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Your name" required />
-        <button className="jth-btn jth-btn--primary jth-btn--block" type="submit">
-          Enter dashboard
+        {error && <div className="jth-admin-login__error">{error}</div>}
+        <label>
+          Email
+          <input
+            type="email"
+            name="email"
+            placeholder="admin@jacobtrumanhomes.co.ke"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button
+          className="jth-btn jth-btn--primary jth-btn--block"
+          type="submit"
+          disabled={submitting}
+        >
+          {submitting ? "Signing in…" : "Sign in"}
         </button>
       </form>
       <Link className="jth-link jth-admin-login__exit" to="/">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
-import { ChevronLeft, MapPin, Check, ShieldCheck, Phone, Mail } from "lucide-react";
+import { ChevronLeft, MapPin, Check, ShieldCheck, Award, Phone, Mail } from "lucide-react";
 import Img from "../components/common/Img";
 import Seal from "../components/common/Seal";
 import { StatusBadge, SpecRow, Eyebrow } from "../components/common/SmallBits";
@@ -17,7 +17,10 @@ export default function ListingDetailPage() {
   const listing = listings.find((l) => String(l.id) === id);
   if (!listing) return <Navigate to="/listings" replace />;
 
-  const gallery = [listing.seed, `${listing.seed}-b`, `${listing.seed}-c`, `${listing.seed}-d`];
+  const gallery = listing.images?.length
+    ? listing.images
+    : [listing.seed, `${listing.seed}-b`, `${listing.seed}-c`, `${listing.seed}-d`].filter(Boolean);
+
   const related = listings.filter((l) => l.id !== listing.id && l.city === listing.city).slice(0, 3);
 
   return (
@@ -28,15 +31,18 @@ export default function ListingDetailPage() {
 
       <div className="jth-detail__gallery">
         <div className="jth-detail__hero-img">
-          <Img seed={gallery[activeImg]} w={1200} h={800} alt={listing.title} />
+          <Img src={gallery[activeImg]} w={1400} h={900} alt={listing.title} loading="eager" />
           <div className="jth-detail__seal">
             <Seal size={74} />
+          </div>
+          <div className="jth-detail__gallery-badge">
+            {activeImg + 1} / {gallery.length}
           </div>
         </div>
         <div className="jth-detail__thumbs">
           {gallery.map((s, i) => (
-            <button key={s} className={i === activeImg ? "active" : ""} onClick={() => setActiveImg(i)}>
-              <Img seed={s} w={300} h={220} />
+            <button key={s + i} className={i === activeImg ? "active" : ""} onClick={() => setActiveImg(i)}>
+              <Img src={s} w={300} h={220} />
             </button>
           ))}
         </div>
@@ -81,7 +87,11 @@ export default function ListingDetailPage() {
 
         <aside className="jth-detail__sidebar">
           <div className="jth-price-card">
-            <div className="jth-price-card__price">{formatPrice(listing.price, listing.listingType === "For Rent")}</div>
+            <div className="jth-price-card__header">
+              <span className="jth-price-card__type">{listing.listingType}</span>
+              <div className="jth-price-card__price">{formatPrice(listing.price, listing.listingType === "For Rent")}</div>
+              <StatusBadge status={listing.status} />
+            </div>
             <Link className="jth-btn jth-btn--primary jth-btn--block" to="/buy">
               {listing.listingType === "For Rent" ? "Enquire to rent" : "Enquire to buy"}
             </Link>
@@ -98,12 +108,16 @@ export default function ListingDetailPage() {
             </div>
             <div className="jth-price-card__contact">
               <span><Phone size={14} /> 0718 806741 | 0100201010</span>
-              <span><Mail size={14} /> info@trumanproperties.com</span>
+              <span><Mail size={14} /> <a href="mailto:info@trumanproperties.com">info@trumanproperties.com</a></span>
             </div>
           </div>
           <div className="jth-trust-card">
             <ShieldCheck size={18} />
             <span>Verified listing, inspected by our team within the last 14 days.</span>
+          </div>
+          <div className="jth-trust-card jth-trust-card--dark">
+            <Award size={18} />
+            <span>Priced competitively based on current market analysis.</span>
           </div>
         </aside>
       </div>
