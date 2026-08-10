@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Img from "../components/common/Img";
 import {
   Building2,
   Home,
@@ -88,6 +89,10 @@ export default function ServicesPage() {
     <div className="jth-services-page">
       {/* Hero */}
       <section className="jth-services-hero">
+        <div className="jth-services-hero__bg">
+          <Img seed="jacob-truman-services" w={1600} h={900} className="jth-services-hero__bg-img" loading="eager" />
+        </div>
+        <div className="jth-services-hero__scrim" />
         <div className="jth-services-hero__content">
           <Eyebrow>What we do</Eyebrow>
           <h1>Comprehensive property services</h1>

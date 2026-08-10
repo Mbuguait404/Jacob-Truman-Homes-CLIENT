@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 230px 1fr;
   min-height: 100vh;
-  background: #f2ece0;
+  background: #eef1f6;
   font-family: "Work Sans", sans-serif;
   color: var(--ink);
 }
@@ -21,7 +21,7 @@
 
 .jth-admin__sidebar {
   background: var(--coffee);
-  color: #d8cbb8;
+  color: #8a9aae;
   padding: 24px 18px;
   display: flex;
   flex-direction: column;
@@ -50,7 +50,7 @@
   gap: 10px;
   background: none;
   border: none;
-  color: #d8cbb8;
+  color: #8a9aae;
   padding: 11px 12px;
   font-size: 14px;
   text-align: left;
@@ -89,12 +89,12 @@
 }
 .jth-admin__sidebar-foot span {
   font-size: 11px;
-  color: #b9aa95;
+  color: #8a9aae;
 }
 .jth-admin__exit {
   background: none;
   border: none;
-  color: #b9aa95;
+  color: #8a9aae;
   font-size: 12px;
   text-align: left;
   margin-top: 14px;
@@ -139,7 +139,7 @@
 }
 .jth-admin__stat span {
   font-size: 12px;
-  color: #8a7a68;
+  color: #6a7e92;
 }
 .jth-admin__panel {
   background: #fff;
@@ -160,7 +160,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 11px;
-  color: #8a7a68;
+  color: #6a7e92;
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
 }
@@ -175,7 +175,7 @@
 .jth-admin__row-actions button {
   background: none;
   border: none;
-  color: #8a7a68;
+  color: #6a7e92;
 }
 .jth-admin__row-actions button:hover {
   color: var(--terracotta);
@@ -193,7 +193,7 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #7a6a58;
+  color: #5a6e82;
   margin-bottom: 16px;
 }
 .jth-admin__form input,
@@ -241,7 +241,7 @@
   font-family: "Fraunces", serif;
 }
 .jth-admin-login p {
-  color: #544537;
+  color: #3a5068;
   line-height: 1.6;
 }
 .jth-admin-login form {
@@ -317,7 +317,7 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #8a7a68;
+  color: #6a7e92;
   padding: 20px 0;
 }
 

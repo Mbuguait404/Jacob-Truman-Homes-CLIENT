@@ -1,6 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import { useListings } from "../context/ListingsContext";
@@ -41,6 +42,10 @@ export default function ListingsPage() {
   return (
     <>
       <div className="jth-listings-hero">
+        <div className="jth-listings-hero__bg">
+          <Img seed="jacob-truman-listings" w={1600} h={900} className="jth-listings-hero__bg-img" loading="eager" />
+        </div>
+        <div className="jth-listings-hero__scrim" />
         <div className="jth-listings-hero__content">
           <Eyebrow>Browse</Eyebrow>
           <h1>{filtered.length} {filtered.length === 1 ? "home" : "homes"} across Kenya</h1>
