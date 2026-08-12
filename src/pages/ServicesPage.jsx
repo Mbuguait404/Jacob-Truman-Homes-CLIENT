@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Img from "../components/common/Img";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import {
   Building2,
@@ -18,6 +17,9 @@ import {
   Layers,
 } from "lucide-react";
 import { Eyebrow } from "../components/common/SmallBits";
+import FaqSection from "../components/common/FaqSection";
+import PageHero from "../components/common/PageHero";
+import { SERVICES_FAQS } from "../data/faqs";
 
 const SERVICES = [
   {
@@ -42,15 +44,15 @@ const SERVICES = [
     description:
       "Full-service property management including tenant vetting, lease administration, rent collection and ongoing maintenance. We protect your investment so you don't have to worry.",
     cta: "Enquire now",
-    to: "/sell",
+    to: `/sell?service=${encodeURIComponent("Property Management")}`,
   },
   {
     icon: Landmark,
     title: "Land Sales",
     description:
       "Access verified land parcels for residential, commercial or agricultural investment across Kenya. We verify titles, boundaries and zoning to ensure you buy with confidence.",
-    cta: "View land listings",
-    to: "/listings",
+    cta: "Enquire about land",
+    to: `/buy?service=${encodeURIComponent("Land Sales")}`,
   },
   {
     icon: TrendingUp,
@@ -58,7 +60,7 @@ const SERVICES = [
     description:
       "Data-driven property investment advice to help you make informed decisions and maximise returns. We analyse market trends, location potential and ROI projections.",
     cta: "Get in touch",
-    to: "/buy",
+    to: `/buy?service=${encodeURIComponent("Investment Consultancy")}`,
   },
   {
     icon: Megaphone,
@@ -66,7 +68,7 @@ const SERVICES = [
     description:
       "Professional photography, targeted marketing and creative campaigns to showcase your property to the right audience across digital and traditional channels.",
     cta: "Market your property",
-    to: "/sell",
+    to: `/sell?service=${encodeURIComponent("Property Marketing")}`,
   },
   {
     icon: Calculator,
@@ -74,7 +76,7 @@ const SERVICES = [
     description:
       "Reliable valuation support and market analysis to ensure your property is priced competitively. Our valuations are based on current comparable sales and market conditions.",
     cta: "Request valuation",
-    to: "/sell",
+    to: `/sell?service=${encodeURIComponent("Property Valuation Support")}`,
   },
   {
     icon: Users,
@@ -82,7 +84,7 @@ const SERVICES = [
     description:
       "End-to-end marketing solutions for residential and commercial development projects. From pre-launch strategy to sell-out, we position your project for maximum uptake.",
     cta: "Partner with us",
-    to: "/sell",
+    to: `/sell?service=${encodeURIComponent("Project Marketing for Developers")}`,
   },
 ];
 
@@ -92,25 +94,17 @@ export default function ServicesPage() {
   return (
     <div className="jth-services-page">
       {/* Hero */}
-      <section className="jth-services-hero">
-        <div className="jth-services-hero__bg">
-          <Img seed="jacob-truman-services" w={1600} h={900} className="jth-services-hero__bg-img" loading="eager" />
-        </div>
-        <div className="jth-services-hero__scrim" />
-        <div className="jth-services-hero__content">
-          <Eyebrow>What we do</Eyebrow>
-          <h1>Comprehensive property services</h1>
-          <p>
-            From sales and letting to management and investment advisory — we deliver
-            professional, transparent and customer-focused real estate solutions across Kenya.
-          </p>
-          <div className="jth-hero-badges">
-            <span className="jth-hero-badge"><Calendar size={14} /> Est. 2011</span>
-            <span className="jth-hero-badge"><Layers size={14} /> 8 Services</span>
-            <span className="jth-hero-badge"><MapPin size={14} /> Kenya-wide</span>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        seed="jacob-truman-services"
+        eyebrow="What we do"
+        title="Comprehensive property services"
+        subtitle="From sales and letting to management and investment advisory — we deliver professional, transparent and customer-focused real estate solutions across Kenya."
+        badges={[
+          { icon: <Calendar size={14} />, label: "Est. 2011" },
+          { icon: <Layers size={14} />, label: "8 Services" },
+          { icon: <MapPin size={14} />, label: "Kenya-wide" },
+        ]}
+      />
 
       {/* Services Grid */}
       <RevealOnScroll delay={100}>
@@ -158,6 +152,9 @@ export default function ServicesPage() {
           </div>
         </section>
       </RevealOnScroll>
+
+      {/* FAQ */}
+      <FaqSection eyebrow="Answers" title="Questions about our services" items={SERVICES_FAQS} />
 
       {/* CTA */}
       <RevealOnScroll delay={100}>

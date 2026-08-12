@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 const WhatsAppIcon = () => (
@@ -26,7 +26,17 @@ const ThreadsIcon = () => (
 );
 
 export default function FloatingSocials() {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(min-width: 561px)").matches;
+  });
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 561px)");
+    const onChange = (e) => setExpanded(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const socials = [
     {

@@ -12,6 +12,8 @@ import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import EnquiryPage from "./pages/EnquiryPage";
 import ContactPage from "./pages/ContactPage";
+import BlogsPage from "./pages/BlogsPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 import AdminLayout from "./admin/AdminLayout";
@@ -38,6 +40,8 @@ export default function App() {
               <Route path="/sell" element={<EnquiryPage mode="sell" />} />
               <Route path="/buy" element={<EnquiryPage mode="buy" />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blogs/:slug" element={<BlogPostPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
 

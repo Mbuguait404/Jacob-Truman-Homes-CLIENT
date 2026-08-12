@@ -5,9 +5,11 @@ import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
+import FaqSection from "../components/common/FaqSection";
 import { useListings } from "../context/ListingsContext";
 import { TESTIMONIALS } from "../data/testimonials";
 import { PROCESS_STEPS } from "../data/process";
+import { HOME_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
 
 export default function HomePage() {
@@ -140,7 +142,7 @@ export default function HomePage() {
               <ShieldCheck size={26} />
               <h3>Property Management</h3>
               <p>Full-service property management including tenant vetting, lease administration, and ongoing maintenance.</p>
-              <Link className="jth-link" to="/sell">
+              <Link className="jth-link" to="/sell?service=Property+Management">
                 Enquire now <ChevronRight size={15} />
               </Link>
             </div>
@@ -148,15 +150,15 @@ export default function HomePage() {
               <Landmark size={26} />
               <h3>Land Sales</h3>
               <p>Access verified land parcels for residential, commercial or agricultural investment across Kenya.</p>
-              <Link className="jth-link" to="/listings">
-                View land listings <ChevronRight size={15} />
+              <Link className="jth-link" to="/buy?service=Land+Sales">
+                Enquire about land <ChevronRight size={15} />
               </Link>
             </div>
             <div className="jth-service-card">
               <TrendingUp size={26} />
               <h3>Investment Consultancy</h3>
               <p>Data-driven property investment advice to help you make informed decisions and maximise returns.</p>
-              <Link className="jth-link" to="/buy">
+              <Link className="jth-link" to="/buy?service=Investment+Consultancy">
                 Get in touch <ChevronRight size={15} />
               </Link>
             </div>
@@ -164,7 +166,7 @@ export default function HomePage() {
               <Megaphone size={26} />
               <h3>Property Marketing</h3>
               <p>Professional photography, targeted marketing, and creative campaigns to showcase your property.</p>
-              <Link className="jth-link" to="/sell">
+              <Link className="jth-link" to="/sell?service=Property+Marketing">
                 Market your property <ChevronRight size={15} />
               </Link>
             </div>
@@ -172,7 +174,7 @@ export default function HomePage() {
               <Calculator size={26} />
               <h3>Property Valuation Support</h3>
               <p>Reliable valuation support and market analysis to ensure your property is priced competitively.</p>
-              <Link className="jth-link" to="/sell">
+              <Link className="jth-link" to="/sell?service=Property+Valuation+Support">
                 Request valuation <ChevronRight size={15} />
               </Link>
             </div>
@@ -180,7 +182,7 @@ export default function HomePage() {
               <Users size={26} />
               <h3>Project Marketing for Developers</h3>
               <p>End-to-end marketing solutions for residential and commercial development projects.</p>
-              <Link className="jth-link" to="/sell">
+              <Link className="jth-link" to="/sell?service=Project+Marketing+for+Developers">
                 Partner with us <ChevronRight size={15} />
               </Link>
             </div>
@@ -287,6 +289,8 @@ export default function HomePage() {
           </div>
         </section>
       </RevealOnScroll>
+
+      <FaqSection eyebrow="Good to know" title="Frequently asked questions" items={HOME_FAQS} />
 
       <RevealOnScroll delay={100}>
         <section className="jth-cta-band">

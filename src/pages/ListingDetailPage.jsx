@@ -3,10 +3,12 @@ import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { ChevronLeft, MapPin, Check, ShieldCheck, Award, Phone, Mail } from "lucide-react";
 import Img from "../components/common/Img";
 import Seal from "../components/common/Seal";
-import { StatusBadge, SpecRow, Eyebrow } from "../components/common/SmallBits";
+import { StatusBadge, SpecRow, Eyebrow, WhatsAppIcon } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
+import FaqSection from "../components/common/FaqSection";
 import { useListings } from "../context/ListingsContext";
+import { PROPERTY_FAQS } from "../data/faqs";
 import { formatPrice } from "../utils/format";
 
 export default function ListingDetailPage() {
@@ -96,9 +98,24 @@ export default function ListingDetailPage() {
             <Link className="jth-btn jth-btn--primary jth-btn--block" to={`/buy?listingId=${listing.id}`}>
               {listing.listingType === "For Rent" ? "Enquire to rent" : "Enquire to buy"}
             </Link>
-            <Link className="jth-btn jth-btn--outline jth-btn--block" to="/about">
-              Talk to the owner
-            </Link>
+            {/* <Link className="jth-btn jth-btn--outline jth-btn--block" to="/about">
+              Talk to the Agent
+            </Link> */}
+            <div className="jth-price-card__cta-row">
+              <a className="jth-btn jth-btn--cta jth-btn--cta-call" href="tel:+254718806741">
+                <Phone size={15} /> Call now
+              </a>
+              <a
+                className="jth-btn jth-btn--cta jth-btn--cta-wa"
+                href={`https://wa.me/254718806741?text=${encodeURIComponent(
+                  `Hi Jacob Truman Properties, I would like to enquire about ${listing.title} (${listing.listingType}) in ${listing.neighborhood}, ${listing.city}.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WhatsAppIcon size={15} /> WhatsApp
+              </a>
+            </div>
             <div className="jth-divider" />
             <div className="jth-price-card__agent">
               <Img seed="owner-jacob" w={100} h={100} className="jth-price-card__avatar" />
@@ -122,6 +139,8 @@ export default function ListingDetailPage() {
           </div>
         </aside>
       </div>
+
+      <FaqSection eyebrow="About this property" title="Frequently asked questions" items={PROPERTY_FAQS} />
 
       {related.length > 0 && (
         <RevealOnScroll delay={100}>

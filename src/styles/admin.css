@@ -155,6 +155,9 @@
   border-collapse: collapse;
   font-size: 13px;
 }
+.jth-admin__table--fixed {
+  table-layout: fixed;
+}
 .jth-admin__table th {
   text-align: left;
   text-transform: uppercase;
@@ -167,18 +170,84 @@
 .jth-admin__table td {
   padding: 12px;
   border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.jth-admin__truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .jth-admin__row-actions {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
 }
 .jth-admin__row-actions button {
-  background: none;
-  border: none;
-  color: #6a7e92;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: #5a6e82;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 .jth-admin__row-actions button:hover {
+  border-color: var(--terracotta);
   color: var(--terracotta);
+  background: rgba(176, 83, 46, 0.05);
+}
+.jth-admin__row-actions button.jth-admin__row-action--danger:hover {
+  border-color: #991b1b;
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+/* ---- Mobile cards ---- */
+.jth-admin__cards {
+  display: none;
+}
+.jth-admin__card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.jth-admin__card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.jth-admin__card-row:last-child {
+  margin-bottom: 0;
+}
+.jth-admin__card-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6a7e92;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.jth-admin__card-value {
+  font-size: 14px;
+  color: var(--ink);
+  word-break: break-word;
+}
+.jth-admin__card-value--muted {
+  font-size: 13px;
+  color: #5a6e82;
 }
 .jth-admin__form-grid {
   display: grid;
@@ -293,10 +362,12 @@
   }
   .jth-admin__panel {
     padding: 18px;
-    overflow-x: auto;
   }
-  .jth-admin__table {
-    min-width: 640px;
+  .jth-admin__table--desktop {
+    display: none;
+  }
+  .jth-admin__cards {
+    display: block;
   }
   .jth-admin__form-grid {
     grid-template-columns: 1fr 1fr;

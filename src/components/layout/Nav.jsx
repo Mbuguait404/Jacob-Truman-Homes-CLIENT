@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, X } from "lucide-react";
+import TopBar from "./TopBar";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -28,9 +29,10 @@ export default function Nav() {
 
   const links = [
     ["/", "Home"],
-    ["/listings", "Listings"],
+    ["/listings", "Properties"],
     ["/services", "Services"],
     ["/about", "About"],
+    ["/blogs", "Blog"],
     ["/contact", "Contact"],
   ];
 
@@ -39,44 +41,47 @@ export default function Nav() {
 
   return (
     <>
-      <header className={`jth-nav ${scrolled || !isHome ? "jth-nav--solid" : ""} ${onHero ? "jth-nav--on-hero" : ""}`}>
-        <div className="jth-nav__inner">
-          <Link to="/" className="jth-brand">
-            <span className="jth-brand__mark">JT</span>
-            <span className="jth-brand__text">
-              Jacob Truman <em>Properties</em>
-            </span>
-          </Link>
+      <div className="jth-header">
+        <TopBar />
+        <header className={`jth-nav ${scrolled || !isHome ? "jth-nav--solid" : ""} ${onHero ? "jth-nav--on-hero" : ""}`}>
+          <div className="jth-nav__inner">
+            <Link to="/" className="jth-brand">
+              <span className="jth-brand__mark">JT</span>
+              <span className="jth-brand__text">
+                Jacob Truman <em>Properties</em>
+              </span>
+            </Link>
 
-          <nav className="jth-nav__links">
-            {links.map(([to, label]) => (
-              <NavLink key={to} to={to} end={to === "/"}>
-                {label}
-              </NavLink>
-            ))}
-          </nav>
+            <nav className="jth-nav__links">
+              {links.map(([to, label]) => (
+                <NavLink key={to} to={to} end={to === "/"}>
+                  {label}
+                </NavLink>
+              ))}
+            </nav>
 
-          <div className="jth-nav__cta">
-            <button className="jth-btn jth-btn--ghost" onClick={() => navigate("/listings?type=For+Rent")}>
-              Buy / Rent
-            </button>
-            <button className="jth-btn jth-btn--primary" onClick={() => navigate("/sell")}>
-              Sell with us
+            <div className="jth-nav__cta">
+              <button className="jth-btn jth-btn--ghost" onClick={() => navigate("/listings?type=For+Rent")}>
+                Buy / Rent
+              </button>
+              <button className="jth-btn jth-btn--primary" onClick={() => navigate("/sell")}>
+                Sell with us
+              </button>
+            </div>
+
+            <button
+              className={`jth-nav__burger ${open ? "jth-nav__burger--open" : ""}`}
+              onClick={() => setOpen(!open)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+            >
+              <span />
+              <span />
+              <span />
             </button>
           </div>
-
-          <button
-            className={`jth-nav__burger ${open ? "jth-nav__burger--open" : ""}`}
-            onClick={() => setOpen(!open)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </header>
+        </header>
+      </div>
 
       {/* Mobile overlay */}
       <div className={`jth-nav__overlay ${open ? "jth-nav__overlay--open" : ""}`}>

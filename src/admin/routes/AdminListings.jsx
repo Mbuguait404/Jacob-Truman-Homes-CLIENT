@@ -45,6 +45,53 @@ function PreviewModal({ listing, onClose }) {
   );
 }
 
+function ListingCard({ listing, onPreview, onEdit, onDelete }) {
+  return (
+    <div className="jth-admin__card">
+      <div className="jth-admin__card-row">
+        <div>
+          <div className="jth-admin__card-label">Title</div>
+          <div className="jth-admin__card-value">
+            {listing.title}
+            {listing.hidden && <span className="jth-admin__hidden-badge">Hidden</span>}
+            {listing.featured && <span className="jth-admin__featured-badge">Featured</span>}
+          </div>
+        </div>
+        <StatusBadge status={listing.status} />
+      </div>
+      <div className="jth-admin__card-row">
+        <div>
+          <div className="jth-admin__card-label">City</div>
+          <div className="jth-admin__card-value--muted">{listing.neighborhood}, {listing.city}</div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div className="jth-admin__card-label">Price</div>
+          <div className="jth-admin__card-value--muted">{formatPrice(listing.price, listing.listingType === "For Rent")}</div>
+        </div>
+      </div>
+      <div className="jth-admin__card-row">
+        <div>
+          <div className="jth-admin__card-label">Type</div>
+          <div className="jth-admin__card-value--muted">{listing.listingType}</div>
+        </div>
+      </div>
+      <div className="jth-admin__card-row">
+        <div className="jth-admin__row-actions">
+          <button onClick={() => onPreview(listing)}>
+            <Eye size={12} /> Preview
+          </button>
+          <button onClick={() => onEdit(listing.id)}>
+            <Pencil size={12} /> Edit
+          </button>
+          <button className="jth-admin__row-action--danger" onClick={() => onDelete(listing)}>
+            <Trash2 size={12} /> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminListings() {
   const { listings, deleteListing, loading } = useListings();
   const navigate = useNavigate();
@@ -70,51 +117,66 @@ export default function AdminListings() {
             <Loader2 size={20} className="jth-spin" /> Loading listings…
           </div>
         ) : (
-          <table className="jth-admin__table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>City</th>
-                <th>Price</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {listings.map((l) => (
-                <tr key={l.id} className={l.hidden ? "jth-admin__row--hidden" : ""}>
-                  <td>
-                    {l.title}
-                    {l.hidden && <span className="jth-admin__hidden-badge">Hidden</span>}
-                    {l.featured && <span className="jth-admin__featured-badge">Featured</span>}
-                  </td>
-                  <td>{l.neighborhood}, {l.city}</td>
-                  <td>{formatPrice(l.price, l.listingType === "For Rent")}</td>
-                  <td>{l.listingType}</td>
-                  <td>
-                    <StatusBadge status={l.status} />
-                  </td>
-                  <td className="jth-admin__row-actions">
-                    <button onClick={() => setPreview(l)} title="Preview">
-                      <Eye size={15} />
-                    </button>
-                    <button onClick={() => navigate(`/admin/listings/${l.id}/edit`)} title="Edit">
-                      <Pencil size={15} />
-                    </button>
-                    <button onClick={() => handleDelete(l)} title="Delete">
-                      <Trash2 size={15} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {listings.length === 0 && (
+          <>
+            <table className="jth-admin__table jth-admin__table--fixed jth-admin__table--desktop">
+              <thead>
                 <tr>
-                  <td colSpan="6">No listings yet.</td>
+                  <th style={{ width: "28%" }}>Title</th>
+                  <th style={{ width: "15%" }}>City</th>
+                  <th style={{ width: "12%" }}>Price</th>
+                  <th style={{ width: "10%" }}>Type</th>
+                  <th style={{ width: "12%" }}>Status</th>
+                  <th style={{ width: "23%" }}>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {listings.map((l) => (
+                  <tr key={l.id} className={l.hidden ? "jth-admin__row--hidden" : ""}>
+                    <td>
+                      {l.title}
+                      {l.hidden && <span className="jth-admin__hidden-badge">Hidden</span>}
+                      {l.featured && <span className="jth-admin__featured-badge">Featured</span>}
+                    </td>
+                    <td>{l.neighborhood}, {l.city}</td>
+                    <td>{formatPrice(l.price, l.listingType === "For Rent")}</td>
+                    <td>{l.listingType}</td>
+                    <td>
+                      <StatusBadge status={l.status} />
+                    </td>
+                    <td className="jth-admin__row-actions">
+                      <button onClick={() => setPreview(l)} title="Preview">
+                        <Eye size={12} /> Preview
+                      </button>
+                      <button onClick={() => navigate(`/admin/listings/${l.id}/edit`)} title="Edit">
+                        <Pencil size={12} /> Edit
+                      </button>
+                      <button className="jth-admin__row-action--danger" onClick={() => handleDelete(l)} title="Delete">
+                        <Trash2 size={12} /> Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {listings.length === 0 && (
+                  <tr>
+                    <td colSpan="6">No listings yet.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <div className="jth-admin__cards">
+              {listings.map((l) => (
+                <ListingCard
+                  key={l.id}
+                  listing={l}
+                  onPreview={setPreview}
+                  onEdit={(id) => navigate(`/admin/listings/${id}/edit`)}
+                  onDelete={handleDelete}
+                />
+              ))}
+              {listings.length === 0 && <p>No listings yet.</p>}
+            </div>
+          </>
         )}
       </div>
       {preview && <PreviewModal listing={preview} onClose={() => setPreview(null)} />}

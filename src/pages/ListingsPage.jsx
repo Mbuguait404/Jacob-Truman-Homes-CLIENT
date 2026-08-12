@@ -1,11 +1,12 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home, AlertTriangle } from "lucide-react";
-import Img from "../components/common/Img";
-import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
+import FaqSection from "../components/common/FaqSection";
+import PageHero from "../components/common/PageHero";
 import { useListings } from "../context/ListingsContext";
+import { LISTINGS_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
 
 export default function ListingsPage() {
@@ -42,22 +43,17 @@ export default function ListingsPage() {
 
   return (
     <>
-      <div className="jth-listings-hero">
-        <div className="jth-listings-hero__bg">
-          <Img seed="jacob-truman-listings" w={1600} h={900} className="jth-listings-hero__bg-img" loading="eager" />
-        </div>
-        <div className="jth-listings-hero__scrim" />
-        <div className="jth-listings-hero__content">
-          <Eyebrow>Browse</Eyebrow>
-          <h1>{filtered.length} {filtered.length === 1 ? "home" : "homes"} across Kenya</h1>
-          <p>Verified properties for sale, rent and investment across Nairobi, Kiambu, Eldoret, Kajiado and beyond.</p>
-          <div className="jth-hero-badges">
-            <span className="jth-hero-badge"><ShieldCheck size={14} /> Verified listings</span>
-            <span className="jth-hero-badge"><MapPin size={14} /> Nationwide</span>
-            <span className="jth-hero-badge"><Home size={14} /> Sale &amp; Rent</span>
-          </div>
-        </div>
-      </div>
+      <PageHero
+        seed="jacob-truman-listings"
+        eyebrow="Browse"
+        title={`${filtered.length} ${filtered.length === 1 ? "home" : "homes"} across Kenya`}
+        subtitle="Verified properties for sale, rent and investment across Nairobi, Kiambu, Eldoret, Kajiado and beyond."
+        badges={[
+          { icon: <ShieldCheck size={14} />, label: "Verified listings" },
+          { icon: <MapPin size={14} />, label: "Nationwide" },
+          { icon: <Home size={14} />, label: "Sale & Rent" },
+        ]}
+      />
 
       <div className="jth-page-header-wrap">
         {error && (
@@ -129,6 +125,8 @@ export default function ListingsPage() {
             )}
           </div>
         </RevealOnScroll>
+
+        <FaqSection eyebrow="Good to know" title="Questions about our listings" items={LISTINGS_FAQS} />
       </div>
     </>
   );

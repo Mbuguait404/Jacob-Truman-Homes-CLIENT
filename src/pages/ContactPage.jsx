@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Globe, Clock, Send, Check, Instagram, Facebook } from "lucide-react";
-import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import RevealOnScroll from "../components/common/RevealOnScroll";
+import FaqSection from "../components/common/FaqSection";
+import PageHero from "../components/common/PageHero";
 import { api } from "../api/client";
+import { CONTACT_FAQS } from "../data/faqs";
 
 const ThreadsIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -43,14 +45,17 @@ export default function ContactPage() {
   return (
     <div className="jth-contact">
       {/* ── Hero ── */}
-      <section className="jth-contact__hero">
-        <div className="jth-contact__hero-text">
-          <Eyebrow>Get in touch</Eyebrow>
-          <h1>We would love to hear from you.</h1>
-          <p>Whether you are buying, selling, renting, or just exploring the market, our team is ready to help.</p>
-        </div>
-        <Img seed="contact-hero" w={900} h={600} />
-      </section>
+      <PageHero
+        seed="jacob-truman-contact"
+        eyebrow="Get in touch"
+        title="We would love to hear from you."
+        subtitle="Whether you are buying, selling, renting, or just exploring the market, our team is ready to help."
+        badges={[
+          { icon: <Phone size={14} />, label: "0718 806741" },
+          { icon: <Mail size={14} />, label: "info@trumanproperties.com" },
+          { icon: <Clock size={14} />, label: "Mon–Sat" },
+        ]}
+      />
 
       {/* ── Contact Info Cards ── */}
       <RevealOnScroll delay={100}>
@@ -164,6 +169,9 @@ export default function ContactPage() {
         </div>
       </section>
       </RevealOnScroll>
+
+      {/* ── FAQs ── */}
+      <FaqSection eyebrow="Quick answers" title="Questions about getting in touch" items={CONTACT_FAQS} />
     </div>
   );
 }

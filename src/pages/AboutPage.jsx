@@ -1,24 +1,25 @@
 import React from "react";
-import { ShieldCheck, Award, Star, Lightbulb, Heart, Check } from "lucide-react";
+import { ShieldCheck, Award, Star, Lightbulb, Heart, Check, MapPin, Users } from "lucide-react";
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import RevealOnScroll from "../components/common/RevealOnScroll";
+import PageHero from "../components/common/PageHero";
 
 export default function AboutPage() {
   return (
     <div className="jth-about">
       {/* ── About Us Hero ── */}
-      <RevealOnScroll>
-        <section className="jth-about__hero">
-          <div>
-            <Eyebrow>About Jacob Truman Properties</Eyebrow>
-            <h1>Connecting you with quality properties across Kenya.</h1>
-            <p>Jacob Truman Properties is a trusted real estate company specializing in the sale, letting, management, and investment advisory of residential, commercial, and land properties across Kenya. We are committed to connecting clients with quality properties while delivering exceptional service, transparency, and value.</p>
-            <p>Whether you are buying your first home, investing in real estate, selling a property, or searching for rental solutions, our experienced team is dedicated to making the process seamless and rewarding.</p>
-          </div>
-          <Img seed="about-hero" w={900} h={700} />
-        </section>
-      </RevealOnScroll>
+      <PageHero
+        seed="jacob-truman-about"
+        eyebrow="About Jacob Truman Properties"
+        title="Connecting you with quality properties across Kenya."
+        subtitle="Jacob Truman Properties is a trusted real estate company specializing in the sale, letting, management, and investment advisory of residential, commercial, and land properties across Kenya. We are committed to connecting clients with quality properties while delivering exceptional service, transparency, and value."
+        badges={[
+          { icon: <Award size={14} />, label: "Est. 2011" },
+          { icon: <Users size={14} />, label: "240+ homes placed" },
+          { icon: <MapPin size={14} />, label: "Kenya-wide" },
+        ]}
+      />
 
       {/* ── Owner ── */}
       <RevealOnScroll delay={100}>

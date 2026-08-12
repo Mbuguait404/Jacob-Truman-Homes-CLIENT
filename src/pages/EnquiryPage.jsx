@@ -14,6 +14,7 @@ export default function EnquiryPage({ mode }) {
 
   const [searchParams] = useSearchParams();
   const listingId = searchParams.get("listingId");
+  const service = searchParams.get("service") || undefined;
   const { listings } = useListings();
 
   const listing = useMemo(
@@ -32,6 +33,7 @@ export default function EnquiryPage({ mode }) {
     const form = e.target;
     const payload = {
       type: mode,
+      service,
       name: form.elements.name.value,
       phone: form.elements.phone.value,
       email: form.elements.email.value || undefined,
@@ -107,6 +109,15 @@ export default function EnquiryPage({ mode }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {service && !listing && (
+              <div className="jth-enquiry__service-ref">
+                <Globe size={18} />
+                <div>
+                  <strong>{service}</strong>
+                  <span>Enquiry about this service</span>
+                </div>
+              </div>
+            )}
             {listing && (
               <div className="jth-enquiry__listing-ref">
                 <Home size={18} />

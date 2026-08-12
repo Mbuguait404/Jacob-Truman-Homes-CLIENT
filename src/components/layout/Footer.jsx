@@ -23,6 +23,7 @@ export default function Footer() {
           <Link to="/listings">Listings</Link>
           <Link to="/services">Services</Link>
           <Link to="/about">About &amp; Owner</Link>
+          <Link to="/blogs">Blog</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/admin">Admin portal</Link>
         </div>
