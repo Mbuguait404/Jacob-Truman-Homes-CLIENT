@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Building2, PlusCircle, Mail, Menu, X, Layers, Newspaper } from "lucide-react";
+import { LayoutDashboard, Building2, PlusCircle, Mail, Menu, X, Layers, Newspaper, ChevronDown } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 import AdminLogin from "./AdminLogin";
 import "../styles/admin.css";
@@ -10,6 +10,54 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const groups = [
+    {
+      id: "overview",
+      label: "Overview",
+      icon: <LayoutDashboard size={17} />,
+      items: [{ to: "/admin/dashboard", label: "Dashboard" }],
+    },
+    {
+      id: "listings",
+      label: "Listings",
+      icon: <Building2 size={17} />,
+      items: [
+        { to: "/admin/listings", label: "All listings" },
+        { to: "/admin/listings/new", label: "Add listing" },
+      ],
+    },
+    {
+      id: "developments",
+      label: "Developments",
+      icon: <Layers size={17} />,
+      items: [
+        { to: "/admin/developments", label: "All developments" },
+        { to: "/admin/developments/new", label: "Add development" },
+      ],
+    },
+    {
+      id: "content",
+      label: "Content",
+      icon: <Newspaper size={17} />,
+      items: [
+        { to: "/admin/blogs", label: "Blogs" },
+        { to: "/admin/blogs/new", label: "Add post" },
+      ],
+    },
+    {
+      id: "leads",
+      label: "Leads",
+      icon: <Mail size={17} />,
+      items: [{ to: "/admin/enquiries", label: "Enquiries" }],
+    },
+  ];
+
+  const [openGroups, setOpenGroups] = useState(() => groups.map((g) => g.id));
+  const toggleGroup = (id) =>
+    setOpenGroups((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -75,13 +123,41 @@ export default function AdminLayout() {
         <div className="jth-admin__brand">
           <span className="jth-brand__mark">JT</span> Admin
         </div>
-        <nav>
-          {nav.map(([to, label, icon]) => (
-            <NavLink key={to} to={to} end={to === "/admin/dashboard" ? true : false}>
-              {icon}
-              {label}
-            </NavLink>
-          ))}
+        <nav className="jth-admin__nav">
+          {groups.map((g) => {
+            const isOpen = openGroups.includes(g.id);
+            const hasActive = g.items.some((it) =>
+              location.pathname.startsWith(it.to)
+            );
+            return (
+              <div className={`jth-admin__group${isOpen ? " is-open" : ""}`} key={g.id}>
+                <button
+                  type="button"
+                  className={`jth-admin__group-head${hasActive ? " is-active" : ""}`}
+                  onClick={() => toggleGroup(g.id)}
+                  aria-expanded={isOpen}
+                >
+                  <span className="jth-admin__group-icon">{g.icon}</span>
+                  <span className="jth-admin__group-label">{g.label}</span>
+                  <ChevronDown size={15} className="jth-admin__group-chevron" />
+                </button>
+                {isOpen && (
+                  <div className="jth-admin__group-items">
+                    {g.items.map((it) => (
+                      <NavLink
+                        key={it.to}
+                        to={it.to}
+                        end={!it.to.endsWith("/new")}
+                        className="jth-admin__sublink"
+                      >
+                        {it.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
         <div className="jth-admin__sidebar-foot">
           <div className="jth-admin__avatar">{admin.name?.[0]?.toUpperCase() || "A"}</div>
