@@ -22,9 +22,9 @@ export const INITIAL_DEVELOPMENTS = [
     completionDate: "2027-06-30",
     featured: true,
     images: [
-      "https://picsum.photos/seed/kilimani-mosaic/1200/800",
-      "https://picsum.photos/seed/kilimani-mosaic-b/1200/800",
-      "https://picsum.photos/seed/kilimani-mosaic-c/1200/800",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=85",
     ],
     description:
       "A 14-storey mixed-use tower on Kilimani's vibrant artery, pairing compact one-bedrooms with generous four-bed penthouses. Residents share a sky deck, co-working lounge and a double-height lobby finished in local stone and brass.",
@@ -47,9 +47,9 @@ export const INITIAL_DEVELOPMENTS = [
     completionDate: "2026-12-15",
     featured: true,
     images: [
-      "https://picsum.photos/seed/runda-greenway/1200/800",
-      "https://picsum.photos/seed/runda-greenway-b/1200/800",
-      "https://picsum.photos/seed/runda-greenway-c/1200/800",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85",
     ],
     description:
       "Twelve detached villas set around a central greenway in Runda's diplomatic belt. Each home opens onto a private garden with a pool court, and the estate shares a clubhouse and a guarded, tree-lined perimeter.",
@@ -70,9 +70,9 @@ export const INITIAL_DEVELOPMENTS = [
     completionDate: "2028-03-01",
     featured: false,
     images: [
-      "https://picsum.photos/seed/eldoret-summit/1200/800",
-      "https://picsum.photos/seed/eldoret-summit-b/1200/800",
-      "https://picsum.photos/seed/eldoret-summit-c/1200/800",
+      "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=85",
     ],
     description:
       "A garden-style apartment community on Elgon View's elevated plots, designed for families and relocating professionals. Low-rise blocks keep every home within a short walk of the shared playground and kitchen garden.",

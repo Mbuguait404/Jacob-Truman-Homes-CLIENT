@@ -1,24 +1,33 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home, AlertTriangle } from "lucide-react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { Search, SlidersHorizontal, X, ShieldCheck, MapPin, Home, AlertTriangle, Maximize2 } from "lucide-react";
 import ListingCard from "../components/common/ListingCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import FaqSection from "../components/common/FaqSection";
 import PageHero from "../components/common/PageHero";
+import { useState, useMemo, lazy, Suspense } from "react";
 import { useListings } from "../context/ListingsContext";
 import { LISTINGS_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
+import { NEIGHBOURHOODS, NEIGHBOURHOOD_NAMES } from "../data/neighbourhoods";
+
+const PropertyMap = lazy(() => import("../components/common/PropertyMap"));
 
 export default function ListingsPage() {
   const { visibleListings, error } = useListings();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const city = searchParams.get("city") || "All";
+  const neighborhood = searchParams.get("neighborhood") || "All";
   const type = searchParams.get("type") || "All";
   const beds = searchParams.get("beds") || "Any";
+  const [mapOpen, setMapOpen] = useState(true);
+  const [mapExpanded, setMapExpanded] = useState(false);
 
   const activeFilters = [
     city !== "All" && { key: "city", label: city },
+    neighborhood !== "All" && { key: "neighborhood", label: neighborhood },
     type !== "All" && { key: "type", label: type },
     beds !== "Any" && { key: "beds", label: `${beds} beds+` },
   ].filter(Boolean);
@@ -36,10 +45,36 @@ export default function ListingsPage() {
 
   const filtered = visibleListings.filter((l) => {
     if (city !== "All" && l.city !== city) return false;
+    if (neighborhood !== "All" && l.neighborhood !== neighborhood) return false;
     if (type !== "All" && l.listingType !== type) return false;
     if (beds !== "Any" && l.beds < Number(beds)) return false;
     return true;
   });
+
+  // Map pins: count visible listings per neighbourhood (ignoring the
+  // neighbourhood filter so the map stays usable while one is selected).
+  const mapPoints = useMemo(() => {
+    return NEIGHBOURHOODS.map((n) => {
+      const count = visibleListings.filter((l) => {
+        if (l.neighborhood !== n.name) return false;
+        if (city !== "All" && l.city !== city) return false;
+        if (type !== "All" && l.listingType !== type) return false;
+        if (beds !== "Any" && l.beds < Number(beds)) return false;
+        return true;
+      }).length;
+      return { name: n.name, city: n.city, lat: n.lat, lng: n.lng, count };
+    }).filter((p) => p.count > 0);
+  }, [visibleListings, city, type, beds]);
+
+  // Same set used for the map pins, but kept as listings for rich popups
+  const mapListings = useMemo(() => {
+    return visibleListings.filter((l) => {
+      if (city !== "All" && l.city !== city) return false;
+      if (type !== "All" && l.listingType !== type) return false;
+      if (beds !== "Any" && l.beds < Number(beds)) return false;
+      return true;
+    });
+  }, [visibleListings, city, type, beds]);
 
   return (
     <>
@@ -82,6 +117,15 @@ export default function ListingsPage() {
               </select>
             </div>
             <div className="jth-filters__group">
+              <label>Neighbourhood</label>
+              <select value={neighborhood} onChange={(e) => updateParam("neighborhood", e.target.value)}>
+                <option>All</option>
+                {NEIGHBOURHOOD_NAMES.map((n) => (
+                  <option key={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+            <div className="jth-filters__group">
               <label>Minimum beds</label>
               <select value={beds} onChange={(e) => updateParam("beds", e.target.value)}>
                 <option>Any</option>
@@ -111,20 +155,87 @@ export default function ListingsPage() {
           </div>
         </div>
 
-        <RevealOnScroll delay={80}>
-          <div className="jth-listings-grid">
-            {filtered.map((l) => (
-              <ListingCard key={l.id} listing={l} />
-            ))}
-            {filtered.length === 0 && (
-              <div className="jth-empty">
-                <Search size={32} />
-                <h3>No homes match those filters</h3>
-                <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
+        <div
+          className={`jth-split${mapOpen ? "" : " jth-split--collapsed"}${
+            mapExpanded ? " jth-split--expanded" : ""
+          }`}
+        >
+          <div className="jth-split__list">
+            <RevealOnScroll delay={80}>
+              <div className="jth-listings-grid">
+                {filtered.map((l) => (
+                  <ListingCard key={l.id} listing={l} />
+                ))}
+                {filtered.length === 0 && (
+                  <div className="jth-empty">
+                    <Search size={32} />
+                    <h3>No homes match those filters</h3>
+                    <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
+                  </div>
+                )}
               </div>
-            )}
+            </RevealOnScroll>
           </div>
-        </RevealOnScroll>
+
+          {mapOpen && (
+            <aside className="jth-split__map">
+              <div className="jth-split__map-bar">
+                <span className="jth-split__map-title">
+                  <MapPin size={14} /> Map
+                </span>
+                <div className="jth-split__map-actions">
+                  {!mapExpanded && (
+                    <button
+                      type="button"
+                      className="jth-icon-btn"
+                      title="Expand map"
+                      onClick={() => setMapExpanded(true)}
+                    >
+                      <Maximize2 size={15} />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="jth-icon-btn"
+                    title={mapExpanded ? "Collapse map" : "Hide map"}
+                    onClick={() => (mapExpanded ? setMapExpanded(false) : setMapOpen(false))}
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
+              </div>
+              <div className="jth-split__map-body">
+                <div className="jth-prop-map-head">
+                  <span>
+                    <MapPin size={14} />
+                    {mapPoints.length
+                      ? `${mapPoints.reduce((s, p) => s + p.count, 0)} homes plotted across ${mapPoints.length} neighbourhoods`
+                      : "No homes plotted yet"}
+                  </span>
+                  <span className="jth-prop-map-hint">Tap a pin to filter by neighbourhood</span>
+                </div>
+                <div className="jth-split__map-canvas">
+                  <Suspense fallback={<div className="jth-prop-map" />}>
+                    <PropertyMap
+                      points={mapPoints}
+                      listings={mapListings}
+                      selected={neighborhood}
+                      onSelect={(n) => updateParam("neighborhood", n)}
+                      onOpenListing={(id) => navigate(`/listings/${id}`)}
+                      expanded={mapExpanded}
+                    />
+                  </Suspense>
+                </div>
+              </div>
+            </aside>
+          )}
+        </div>
+
+        {!mapOpen && (
+          <button type="button" className="jth-map-show" onClick={() => setMapOpen(true)}>
+            <MapPin size={15} /> Show map
+          </button>
+        )}
 
         <FaqSection eyebrow="Good to know" title="Questions about our listings" items={LISTINGS_FAQS} />
       </div>

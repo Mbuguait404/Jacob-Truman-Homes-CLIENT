@@ -13,6 +13,7 @@ import { TESTIMONIALS } from "../data/testimonials";
 import { PROCESS_STEPS } from "../data/process";
 import { HOME_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
+import { NEIGHBOURHOODS } from "../data/neighbourhoods";
 
 export default function HomePage() {
   const { visibleListings } = useListings();
@@ -260,6 +261,35 @@ export default function HomePage() {
       </RevealOnScroll>
 
       <RevealOnScroll delay={100}>
+        <section className="jth-section jth-hoods">
+          <div className="jth-section__head">
+            <div>
+              <Eyebrow>Where you want to live</Eyebrow>
+              <h2>Find a home by neighbourhood</h2>
+            </div>
+            <Link className="jth-link" to="/listings">
+              Browse all listings <ChevronRight size={16} />
+            </Link>
+          </div>
+          <div className="jth-hoods__grid">
+            {NEIGHBOURHOODS.map((n) => (
+              <Link key={n.name} to={`/listings?neighborhood=${encodeURIComponent(n.name)}`} className="jth-hood">
+                <div className="jth-hood__media">
+                  <Img seed={n.seed} w={700} h={520} alt={n.name} />
+                </div>
+                <div className="jth-hood__body">
+                  <span className="jth-hood__city">{n.city}</span>
+                  <h3>{n.name}</h3>
+                  <p className="jth-hood__tagline">{n.tagline}</p>
+                  <span className="jth-link">View homes <ChevronRight size={15} /></span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll delay={100}>
         <section className="jth-section jth-map-section">
           <div className="jth-section__head">
             <div>
@@ -284,6 +314,18 @@ export default function HomePage() {
               <span key={city} className="jth-map-location">
                 <MapPin size={13} /> {city}
               </span>
+            ))}
+          </div>
+          <div className="jth-map-hoods">
+            <span className="jth-map-hoods__label">Browse by neighbourhood:</span>
+            {NEIGHBOURHOODS.map((n) => (
+              <Link
+                key={n.name}
+                to={`/listings?neighborhood=${encodeURIComponent(n.name)}`}
+                className="jth-map-hood"
+              >
+                {n.name}
+              </Link>
             ))}
           </div>
         </section>

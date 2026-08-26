@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Img({ seed, src, w = 800, h = 600, alt = "", className = "", style = {}, loading = "lazy" }) {
-  const handleContextMenu = (e) => e.preventDefault();
-
-  const url = src || `https://picsum.photos/seed/${seed}/${w}/${h}`;
+  const [errored, setErrored] = useState(false);
+  const url = !errored && src ? src : `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
   return (
     <img
@@ -13,7 +12,8 @@ export default function Img({ seed, src, w = 800, h = 600, alt = "", className =
       style={style}
       loading={loading}
       draggable={false}
-      onContextMenu={handleContextMenu}
+      onContextMenu={(e) => e.preventDefault()}
+      onError={() => setErrored(true)}
     />
   );
 }
