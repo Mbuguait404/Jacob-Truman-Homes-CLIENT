@@ -7,6 +7,12 @@ export const WhatsAppIcon = ({ size = 22 }) => (
   </svg>
 );
 
+export const TikTokIcon = ({ size = 22 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
+    <path d="M16.6 5.82a4.276 4.276 0 0 1-4.276-4.277v-1.04h-3.14v11.59a2.504 2.504 0 1 1-2.503-2.503c.276 0 .55.045.808.13v-3.19a5.63 5.63 0 1 0 5.056 5.598V8.96a7.27 7.27 0 0 0 4.255 2.149V8.0a4.27 4.27 0 0 1-3.2-2.18z"/>
+  </svg>
+);
+
 export function Eyebrow({ children }) {
   return <div className="jth-eyebrow">{children}</div>;
 }

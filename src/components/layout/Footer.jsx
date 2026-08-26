@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Globe, Instagram, Facebook } from "lucide-react";
 import Seal from "../common/Seal";
+import { TikTokIcon } from "../common/SmallBits";
 
 const ThreadsIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -21,7 +22,8 @@ export default function Footer() {
           <h4>Explore</h4>
           <Link to="/">Home</Link>
           <Link to="/listings">Listings</Link>
-          <Link to="/services">Services</Link>
+          <Link to="/developments">Developments</Link>
+          <Link to="/about#services">Services</Link>
           <Link to="/about">About &amp; Owner</Link>
           <Link to="/blogs">Blog</Link>
           <Link to="/contact">Contact</Link>
@@ -52,6 +54,7 @@ export default function Footer() {
           <a href="https://www.instagram.com/jacobtrumanhomes/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
           <a href="https://www.threads.com/@jacobtrumanhomes" target="_blank" rel="noopener noreferrer" aria-label="Threads"><ThreadsIcon /></a>
           <a href="https://www.facebook.com/JackTrumanProperties/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={18} /></a>
+          <a href="https://www.tiktok.com/@jacobtrumanhomes" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TikTokIcon size={18} /></a>
         </div>
       </div>
     </footer>

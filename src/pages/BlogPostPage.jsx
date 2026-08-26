@@ -4,14 +4,24 @@ import { ChevronLeft, Calendar, Clock, Phone, ArrowRight, User } from "lucide-re
 import Img from "../components/common/Img";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import { Eyebrow, WhatsAppIcon } from "../components/common/SmallBits";
+import { useBlogs } from "../context/BlogsContext";
+import { formatBlogDate } from "../utils/format";
 import { BLOGS } from "../data/blogs";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = BLOGS.find((b) => b.slug === slug);
+  const { blogs } = useBlogs();
+
+  const bySlug = new Map();
+  [...BLOGS, ...blogs].forEach((b) => bySlug.set(b.slug, b));
+  const post = bySlug.get(slug);
+
   if (!post) return <Navigate to="/blogs" replace />;
 
-  const related = BLOGS.filter((b) => b.slug !== post.slug).slice(0, 2);
+  const postSections = post.content || post.sections || [];
+  const related = [...BLOGS, ...blogs]
+    .filter((b) => b.slug !== post.slug)
+    .slice(0, 2);
 
   return (
     <div className="jth-blog-post">
@@ -23,19 +33,19 @@ export default function BlogPostPage() {
         <span className="jth-blog-card__category">{post.category}</span>
         <h1>{post.title}</h1>
         <div className="jth-blog-post__meta">
-          <span><User size={14} /> Jacob Truman</span>
-          <span><Calendar size={14} /> {post.date}</span>
+          <span><User size={14} /> {post.author || "Jacob Truman"}</span>
+          <span><Calendar size={14} /> {formatBlogDate(post.publishedAt) || post.date}</span>
           <span><Clock size={14} /> {post.readTime}</span>
         </div>
       </div>
 
       <div className="jth-blog-post__hero">
-        <Img seed={post.seed} w={1400} h={750} alt={post.title} loading="eager" />
+        <Img seed={post.seed} src={post.coverImage} w={1400} h={750} alt={post.title} loading="eager" />
       </div>
 
       <div className="jth-blog-post__layout">
         <article className="jth-blog-post__body">
-          {post.sections.map((s) => (
+          {postSections.map((s) => (
             <section key={s.heading}>
               <h2>{s.heading}</h2>
               {s.paragraphs.map((p, i) => (
@@ -49,7 +59,7 @@ export default function BlogPostPage() {
           <div className="jth-blog-post__author">
             <Img seed="owner-jacob" w={96} h={96} className="jth-blog-post__author-img" />
             <Eyebrow>Written by</Eyebrow>
-            <h3>Jacob Truman</h3>
+            <h3>{post.author || "Jacob Truman"}</h3>
             <p>Principal agent and founder of Jacob Truman Properties — 15+ years matching buyers, sellers and tenants across Kenya.</p>
           </div>
           <div className="jth-blog-post__cta">
@@ -79,12 +89,12 @@ export default function BlogPostPage() {
               {related.map((b) => (
                 <Link className="jth-blog-card" to={`/blogs/${b.slug}`} key={b.slug}>
                   <div className="jth-blog-card__media">
-                    <Img seed={b.seed} w={900} h={560} alt={b.title} />
+                    <Img seed={b.seed} src={b.coverImage} w={900} h={560} alt={b.title} />
                   </div>
                   <div className="jth-blog-card__body">
                     <div className="jth-blog-card__meta">
                       <span className="jth-blog-card__category">{b.category}</span>
-                      <span><Calendar size={13} /> {b.date}</span>
+                      <span><Calendar size={13} /> {formatBlogDate(b.publishedAt) || b.date}</span>
                     </div>
                     <h3>{b.title}</h3>
                     <p>{b.excerpt}</p>

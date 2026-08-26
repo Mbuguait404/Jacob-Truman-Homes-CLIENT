@@ -4,9 +4,11 @@ import { ArrowRight, ChevronRight, Building2, Home, Landmark, ShieldCheck, Trend
 import Img from "../components/common/Img";
 import { Eyebrow } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
+import DevelopmentCard from "../components/common/DevelopmentCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import FaqSection from "../components/common/FaqSection";
 import { useListings } from "../context/ListingsContext";
+import { useDevelopments } from "../context/DevelopmentsContext";
 import { TESTIMONIALS } from "../data/testimonials";
 import { PROCESS_STEPS } from "../data/process";
 import { HOME_FAQS } from "../data/faqs";
@@ -14,10 +16,12 @@ import { CITIES } from "../data/listings";
 
 export default function HomePage() {
   const { visibleListings } = useListings();
+  const { visibleDevelopments } = useDevelopments();
   const navigate = useNavigate();
   const [searchCity, setSearchCity] = useState("All Regions");
   const [searchType, setSearchType] = useState("All Types");
   const featured = visibleListings.filter((l) => l.featured);
+  const featuredDevelopments = visibleDevelopments.filter((d) => d.featured);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -31,7 +35,7 @@ export default function HomePage() {
     <>
       <section className="jth-hero">
         <div className="jth-hero__bg">
-          <Img seed="hero-main" w={1600} h={1000} className="jth-hero__bg-img" loading="eager" />
+          <img src="/luxury-property-front.jpg" alt="Luxury property front" className="jth-hero__bg-img" loading="eager" />
         </div>
         <div className="jth-hero__scrim" />
         <div className="jth-hero__content">
@@ -118,6 +122,29 @@ export default function HomePage() {
       </RevealOnScroll>
 
       <RevealOnScroll delay={100}>
+        <section className="jth-section">
+          <div className="jth-section__head">
+            <div>
+              <Eyebrow>Developments</Eyebrow>
+              <h2>New-build &amp; off-plan projects</h2>
+            </div>
+            <Link className="jth-link" to="/developments">
+              View all developments <ChevronRight size={16} />
+            </Link>
+          </div>
+          {featuredDevelopments.length > 0 ? (
+            <div className="jth-listings-grid">
+              {featuredDevelopments.map((d) => (
+                <DevelopmentCard key={d.id} development={d} />
+              ))}
+            </div>
+          ) : (
+            <p className="jth-empty-note">No featured developments right now — check back soon.</p>
+          )}
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll delay={100}>
         <section className="jth-section jth-services">
           <Eyebrow>What we do</Eyebrow>
           <h2>Comprehensive property services</h2>
@@ -182,8 +209,8 @@ export default function HomePage() {
               <Users size={26} />
               <h3>Project Marketing for Developers</h3>
               <p>End-to-end marketing solutions for residential and commercial development projects.</p>
-              <Link className="jth-link" to="/sell?service=Project+Marketing+for+Developers">
-                Partner with us <ChevronRight size={15} />
+              <Link className="jth-link" to="/developments">
+                See our developments <ChevronRight size={15} />
               </Link>
             </div>
           </div>
@@ -286,6 +313,20 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll delay={100}>
+        <section className="jth-section jth-founder-band">
+          <Img src="/jack+truman+collage.png" w={900} h={700} alt="Jacob Truman with clients" className="jth-founder-band__img" />
+          <div className="jth-founder-band__content">
+            <Eyebrow>Meet the founder</Eyebrow>
+            <h2>Personally invested in every move.</h2>
+            <p>Jacob Truman founded the agency in 2011 after years managing property across Nairobi. Today he leads a team that treats every listing as a personal commitment &mdash; combining market expertise with a genuine passion for connecting people with the right home.</p>
+            <button className="jth-btn jth-btn--outline" onClick={() => navigate("/about")}>
+              Meet Jacob Truman
+            </button>
           </div>
         </section>
       </RevealOnScroll>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Globe, Clock, Send, Check, Instagram, Facebook } from "lucide-react";
-import { Eyebrow } from "../components/common/SmallBits";
+import { Eyebrow, TikTokIcon } from "../components/common/SmallBits";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import FaqSection from "../components/common/FaqSection";
 import PageHero from "../components/common/PageHero";
@@ -154,7 +154,7 @@ export default function ContactPage() {
           <Link className="jth-btn jth-btn--outline jth-btn--block" to="/buy">
             Buy or rent
           </Link>
-          <Link className="jth-btn jth-btn--outline jth-btn--block" to="/services">
+          <Link className="jth-btn jth-btn--outline jth-btn--block" to="/about#services">
             Our services
           </Link>
 
@@ -164,6 +164,7 @@ export default function ContactPage() {
               <a href="https://www.instagram.com/jacobtrumanhomes/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
               <a href="https://www.threads.com/@jacobtrumanhomes" target="_blank" rel="noopener noreferrer" aria-label="Threads"><ThreadsIcon /></a>
               <a href="https://www.facebook.com/JackTrumanProperties/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={18} /></a>
+              <a href="https://www.tiktok.com/@jacobtrumanhomes" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TikTokIcon size={18} /></a>
             </div>
           </div>
         </div>

@@ -30,7 +30,7 @@ export default function Nav() {
   const links = [
     ["/", "Home"],
     ["/listings", "Properties"],
-    ["/services", "Services"],
+    ["/developments", "Developments"],
     ["/about", "About"],
     ["/blogs", "Blog"],
     ["/contact", "Contact"],

@@ -1,3 +1,12 @@
+export const BLOG_CATEGORIES = [
+  "Buying",
+  "Selling",
+  "Market",
+  "Investment",
+  "Finance",
+  "Guides",
+];
+
 export const BLOGS = [
   {
     slug: "first-time-buyers-kenya-guide",

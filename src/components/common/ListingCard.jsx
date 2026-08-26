@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MapPin, Phone } from "lucide-react";
 import Img from "./Img";
 import Seal from "./Seal";
+import ShareButton from "./ShareButton";
 import { StatusBadge, SpecRow, WhatsAppIcon } from "./SmallBits";
 import { formatPrice } from "../../utils/format";
 
@@ -15,6 +16,9 @@ export default function ListingCard({ listing, size = "md" }) {
   const waText = encodeURIComponent(
     `Hi Jacob Truman Properties, I would like to enquire about ${listing.title} (${listing.listingType}) in ${listing.neighborhood}, ${listing.city}.`
   );
+
+  const cardUrl = typeof window !== "undefined" ? `${window.location.origin}/listings/${listing.id}` : "";
+  const cardShareText = `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`;
 
   return (
     <div className={`jth-card jth-card--${size}`}>
@@ -51,6 +55,7 @@ export default function ListingCard({ listing, size = "md" }) {
         >
           <WhatsAppIcon size={16} /> WhatsApp
         </a>
+        <ShareButton iconOnly url={cardUrl} title={listing.title} text={cardShareText} className="jth-card__cta-share" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Building2, PlusCircle, Mail, Menu, X } from "lucide-react";
+import { LayoutDashboard, Building2, PlusCircle, Mail, Menu, X, Layers, Newspaper } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 import AdminLogin from "./AdminLogin";
 import "../styles/admin.css";
@@ -42,6 +42,10 @@ export default function AdminLayout() {
     ["/admin/dashboard", "Dashboard", <LayoutDashboard size={17} key="i" />],
     ["/admin/listings", "Listings", <Building2 size={17} key="i" />],
     ["/admin/listings/new", "Add listing", <PlusCircle size={17} key="i" />],
+    ["/admin/developments", "Developments", <Layers size={17} key="i" />],
+    ["/admin/developments/new", "Add development", <PlusCircle size={17} key="i" />],
+    ["/admin/blogs", "Blogs", <Newspaper size={17} key="i" />],
+    ["/admin/blogs/new", "Add post", <PlusCircle size={17} key="i" />],
     ["/admin/enquiries", "Enquiries", <Mail size={17} key="i" />],
   ];
 

@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { ChevronLeft, MapPin, Check, ShieldCheck, Award, Phone, Mail } from "lucide-react";
 import Img from "../components/common/Img";
 import Seal from "../components/common/Seal";
+import ShareButton from "../components/common/ShareButton";
 import { StatusBadge, SpecRow, Eyebrow, WhatsAppIcon } from "../components/common/SmallBits";
 import ListingCard from "../components/common/ListingCard";
 import RevealOnScroll from "../components/common/RevealOnScroll";
@@ -25,6 +26,10 @@ export default function ListingDetailPage() {
     : [listing.seed, `${listing.seed}-b`, `${listing.seed}-c`, `${listing.seed}-d`].filter(Boolean);
 
   const related = visibleListings.filter((l) => l.id !== listing.id && l.city === listing.city).slice(0, 3);
+
+  const listingUrl =
+    typeof window !== "undefined" ? `${window.location.origin}/listings/${listing.id}` : "";
+  const listingShareText = `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`;
 
   return (
     <div className="jth-detail">
@@ -61,7 +66,10 @@ export default function ListingDetailPage() {
                 <MapPin size={14} /> {listing.neighborhood}, {listing.city}
               </span>
             </div>
-            <StatusBadge status={listing.status} />
+            <div className="jth-detail__title-actions">
+              <StatusBadge status={listing.status} />
+              <ShareButton url={listingUrl} title={listing.title} text={listingShareText} />
+            </div>
           </div>
 
           <SpecRow listing={listing} />
@@ -118,7 +126,7 @@ export default function ListingDetailPage() {
             </div>
             <div className="jth-divider" />
             <div className="jth-price-card__agent">
-              <Img seed="owner-jacob" w={100} h={100} className="jth-price-card__avatar" />
+              <Img src="/jack_truman.png" w={100} h={100} alt="Jacob Truman, Principal Agent" className="jth-price-card__avatar" />
               <div>
                 <strong>Jacob Truman</strong>
                 <span>Principal agent</span>

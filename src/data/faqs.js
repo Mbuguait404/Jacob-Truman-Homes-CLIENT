@@ -123,3 +123,26 @@ export const BLOG_FAQS = [
     a: "Yes, please share. If you'd like to republish an article in full, just credit Jacob Truman Properties and link back to the original page.",
   },
 ];
+
+export const DEVELOPMENTS_FAQS = [
+  {
+    q: "What is a development, and how is it different from a normal listing?",
+    a: "A development is a new-build or off-plan project — an apartment tower, villa estate or mixed-use community — marketed before or during construction. Unlike a single resale home, you choose from a range of unit types released in phases.",
+  },
+  {
+    q: "Can I buy off-plan, and what are the risks?",
+    a: "Yes. Off-plan lets you secure the best units and pricing early. We only list projects from vetted developers, share completion timelines openly, and recommend independent legal review of the sale agreement before you commit.",
+  },
+  {
+    q: "How do I reserve a unit?",
+    a: "Reach out via the enquiry button on any development. We'll connect you with the developer or our team, confirm availability, and guide you through the reservation, booking and purchase steps.",
+  },
+  {
+    q: "Are the prices shown final?",
+    a: "Prices shown are 'from' the entry unit type and exclude statutory costs such as stamp duty, legal fees and service charge. Final pricing depends on the specific unit, floor and view you select.",
+  },
+  {
+    q: "Do you help with financing or mortgages?",
+    a: "We can introduce you to mortgage partners and help you understand what you qualify for, so you can plan your purchase with confidence.",
+  },
+];

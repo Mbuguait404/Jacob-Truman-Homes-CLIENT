@@ -5,11 +5,36 @@ import Img from "../components/common/Img";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import FaqSection from "../components/common/FaqSection";
 import PageHero from "../components/common/PageHero";
-import { BLOGS } from "../data/blogs";
+import { useBlogs } from "../context/BlogsContext";
+import { formatBlogDate } from "../utils/format";
 import { BLOG_FAQS } from "../data/faqs";
 
+function byDateDesc(a, b) {
+  const da = a.publishedAt ? new Date(a.publishedAt) : 0;
+  const db = b.publishedAt ? new Date(b.publishedAt) : 0;
+  return db - da;
+}
+
 export default function BlogsPage() {
-  const [featured, ...rest] = BLOGS;
+  const { visibleBlogs, loading } = useBlogs();
+  const sorted = [...visibleBlogs].sort(byDateDesc);
+  const [featured, ...rest] = sorted;
+
+  if (loading || !featured) {
+    return (
+      <>
+        <PageHero
+          seed="jacob-truman-blogs"
+          eyebrow="Insights"
+          title="Notes from the Kenyan property market"
+          subtitle="Practical guides, market analysis and honest numbers from the team at Jacob Truman Properties — written for buyers, sellers and investors."
+        />
+        <div className="jth-blogs-wrap">
+          <section className="jth-blogs"><p style={{ padding: "2rem" }}>Loading articles…</p></section>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -19,7 +44,7 @@ export default function BlogsPage() {
         title="Notes from the Kenyan property market"
         subtitle="Practical guides, market analysis and honest numbers from the team at Jacob Truman Properties — written for buyers, sellers and investors."
         badges={[
-          { icon: <Newspaper size={14} />, label: `${BLOGS.length} articles` },
+          { icon: <Newspaper size={14} />, label: `${sorted.length} articles` },
           { icon: <Calendar size={14} />, label: "Updated monthly" },
           { icon: <Clock size={14} />, label: "5 min reads" },
         ]}
@@ -30,12 +55,12 @@ export default function BlogsPage() {
           <section className="jth-blogs">
             <Link className="jth-blog-card jth-blog-card--featured" to={`/blogs/${featured.slug}`}>
               <div className="jth-blog-card__media">
-                <Img seed={featured.seed} w={1200} h={700} alt={featured.title} />
+                <Img seed={featured.seed} src={featured.coverImage} w={1200} h={700} alt={featured.title} />
               </div>
               <div className="jth-blog-card__body">
                 <div className="jth-blog-card__meta">
                   <span className="jth-blog-card__category">{featured.category}</span>
-                  <span><Calendar size={13} /> {featured.date}</span>
+                  <span><Calendar size={13} /> {formatBlogDate(featured.publishedAt) || featured.date}</span>
                   <span><Clock size={13} /> {featured.readTime}</span>
                 </div>
                 <h2>{featured.title}</h2>
@@ -53,12 +78,12 @@ export default function BlogsPage() {
             {rest.map((b) => (
               <Link className="jth-blog-card" to={`/blogs/${b.slug}`} key={b.slug}>
                 <div className="jth-blog-card__media">
-                  <Img seed={b.seed} w={900} h={560} alt={b.title} />
+                  <Img seed={b.seed} src={b.coverImage} w={900} h={560} alt={b.title} />
                 </div>
                 <div className="jth-blog-card__body">
                   <div className="jth-blog-card__meta">
                     <span className="jth-blog-card__category">{b.category}</span>
-                    <span><Calendar size={13} /> {b.date}</span>
+                    <span><Calendar size={13} /> {formatBlogDate(b.publishedAt) || b.date}</span>
                     <span><Clock size={13} /> {b.readTime}</span>
                   </div>
                   <h3>{b.title}</h3>
