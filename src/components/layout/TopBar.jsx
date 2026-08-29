@@ -14,8 +14,8 @@ export default function TopBar() {
           <a className="jth-topbar__item" href="tel:+254100201010">
             <Phone size={13} /> 0100 201010
           </a>
-          <a className="jth-topbar__item" href="mailto:info@trumanproperties.com">
-            <Mail size={13} /> info@trumanproperties.com
+          <a className="jth-topbar__item" href="mailto:info.trumanproperties@gmail.com">
+            <Mail size={13} /> info.trumanproperties@gmail.com
           </a>
           <span className="jth-topbar__item jth-topbar__item--muted">
             <MapPin size={13} /> Nairobi, Kenya

@@ -83,7 +83,7 @@ export default function EnquiryPage({ mode }) {
             </div>
             <div className="jth-enquiry__contact-row">
               <Mail size={16} />
-              <span>info@trumanproperties.com</span>
+              <span>info.trumanproperties@gmail.com</span>
             </div>
             <div className="jth-enquiry__contact-row">
               <Globe size={16} />

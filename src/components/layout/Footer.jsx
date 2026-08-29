@@ -43,7 +43,7 @@ export default function Footer() {
         <div className="jth-footer__col">
           <h4>Contact</h4>
           <span><Phone size={14} /> 0718 806741 | 0100201010</span>
-          <span><Mail size={14} /> <a href="mailto:info@trumanproperties.com">info@trumanproperties.com</a></span>
+          <span><Mail size={14} /> <a href="mailto:info.trumanproperties@gmail.com">info.trumanproperties@gmail.com</a></span>
           <span><Globe size={14} /> <a href="http://www.trumanproperties.com" target="_blank" rel="noopener noreferrer">www.trumanproperties.com</a></span>
           <span><MapPin size={14} /> Nairobi, Kenya</span>
         </div>

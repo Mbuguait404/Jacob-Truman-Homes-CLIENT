@@ -134,7 +134,7 @@ export default function ListingDetailPage() {
             </div>
             <div className="jth-price-card__contact">
               <span><Phone size={14} /> 0718 806741 | 0100201010</span>
-              <span><Mail size={14} /> <a href="mailto:info@trumanproperties.com">info@trumanproperties.com</a></span>
+              <span><Mail size={14} /> <a href="mailto:info.trumanproperties@gmail.com">info.trumanproperties@gmail.com</a></span>
             </div>
           </div>
           <div className="jth-trust-card">

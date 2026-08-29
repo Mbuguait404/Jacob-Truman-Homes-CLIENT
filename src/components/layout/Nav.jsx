@@ -122,7 +122,7 @@ export default function Nav() {
             </div>
             <div className="jth-nav__overlay-contact-row">
               <Mail size={16} />
-              <a href="mailto:info@trumanproperties.com">info@trumanproperties.com</a>
+              <a href="mailto:info.trumanproperties@gmail.com">info.trumanproperties@gmail.com</a>
             </div>
             <div className="jth-nav__overlay-contact-row">
               <MapPin size={16} />

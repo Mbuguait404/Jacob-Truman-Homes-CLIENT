@@ -53,7 +53,7 @@ export default function ContactPage() {
         subtitle="Whether you are buying, selling, renting, or just exploring the market, our team is ready to help."
         badges={[
           { icon: <Phone size={14} />, label: "0718 806741" },
-          { icon: <Mail size={14} />, label: "info@trumanproperties.com" },
+          { icon: <Mail size={14} />, label: "info.trumanproperties@gmail.com" },
           { icon: <Clock size={14} />, label: "Mon–Sat" },
         ]}
       />
@@ -74,7 +74,7 @@ export default function ContactPage() {
             <Mail size={22} />
             <h3>Email</h3>
             <p>
-              <a href="mailto:info@trumanproperties.com">info@trumanproperties.com</a>
+              <a href="mailto:info.trumanproperties@gmail.com">info.trumanproperties@gmail.com</a>
             </p>
           </div>
           <div className="jth-contact__card">
