@@ -15,6 +15,7 @@ import { HOME_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
 import { NEIGHBOURHOODS } from "../data/neighbourhoods";
 import { AREA_GROUPS, buildAreaHref } from "../data/areas";
+import Seo from "../components/common/Seo";
 
 export default function HomePage() {
   const { visibleListings } = useListings();
@@ -35,7 +36,21 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="jth-hero">
+      <Seo
+        title="Jacob Truman Properties — Buy, Sell & Rent Verified Homes in Kenya"
+        description="Truman Properties (Truman Homes) helps you buy, sell, rent and invest in verified homes, land and commercial property across Nairobi, Kiambu, Eldoret and Kajiado."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Property listings across Kenya",
+          url: `${"https://trumanproperties.co.ke"}/listings`,
+          description:
+            "Verified houses, apartments, villas, townhouses and land for sale and rent across Kenya.",
+        }}
+      />
+      <RevealOnScroll delay={80}>
+        <section className="jth-hero">
         <div className="jth-hero__bg">
           <img src="/luxury-property-front.jpg" alt="Luxury property front" className="jth-hero__bg-img" loading="eager" />
         </div>
@@ -81,6 +96,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RevealOnScroll>
 
       <RevealOnScroll>
         <section className="jth-section jth-strip">

@@ -8,6 +8,7 @@ import PageHero from "../components/common/PageHero";
 import { useBlogs } from "../context/BlogsContext";
 import { formatBlogDate } from "../utils/format";
 import { BLOG_FAQS } from "../data/faqs";
+import Seo from "../components/common/Seo";
 
 function byDateDesc(a, b) {
   const da = a.publishedAt ? new Date(a.publishedAt) : 0;
@@ -38,6 +39,11 @@ export default function BlogsPage() {
 
   return (
     <>
+      <Seo
+        title="Property Insights & Guides — Jacob Truman Properties Blog"
+        description="Practical guides, market analysis and honest numbers for buyers, sellers and investors from the team at Truman Properties — Jacob Truman Properties, Kenya."
+        path="/blogs"
+      />
       <PageHero
         seed="jacob-truman-blogs"
         eyebrow="Insights"

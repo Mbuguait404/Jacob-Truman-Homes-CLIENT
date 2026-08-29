@@ -7,6 +7,7 @@ import RevealOnScroll from "../components/common/RevealOnScroll";
 import { api } from "../api/client";
 import { useListings } from "../context/ListingsContext";
 import { Button } from "../components/common/Button";
+import Seo from "../components/common/Seo";
 
 export default function EnquiryPage({ mode }) {
   const [sent, setSent] = useState(false);
@@ -53,9 +54,19 @@ export default function EnquiryPage({ mode }) {
     }
   };
 
+  const enquiryTitle = listing
+    ? `Enquire about ${listing.title}`
+    : isSell
+    ? "Sell your property with Jacob Truman Properties"
+    : "Enquire about buying or renting with Truman Properties";
+  const enquiryDescription = isSell
+    ? "Request a free valuation and let Truman Properties (Jacob Truman Properties) sell your home across Kenya."
+    : "Tell Truman Homes what you're looking for and we'll shortlist verified properties across Nairobi, Kiambu, Eldoret and Kajiado.";
+
   return (
     <RevealOnScroll delay={80}>
     <div className="jth-enquiry">
+      <Seo title={enquiryTitle} description={enquiryDescription} path={mode === "sell" ? "/sell" : "/buy"} />
       <div className="jth-enquiry__side">
         <div className="jth-enquiry__side-text">
           <Eyebrow>{isSell ? "Sell with us" : "Buy or rent with us"}</Eyebrow>

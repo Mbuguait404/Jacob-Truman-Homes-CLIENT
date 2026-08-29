@@ -24,6 +24,7 @@ import RevealOnScroll from "../components/common/RevealOnScroll";
 import PageHero from "../components/common/PageHero";
 import FaqSection from "../components/common/FaqSection";
 import { SERVICES_FAQS } from "../data/faqs";
+import Seo from "../components/common/Seo";
 
 const SERVICES = [
   {
@@ -97,6 +98,11 @@ export default function AboutPage() {
 
   return (
     <div className="jth-about">
+      <Seo
+        title="About Jacob Truman Properties — Trusted Real Estate Agents in Kenya"
+        description="Meet Truman Properties (Truman Homes): a trusted Kenyan real estate company for the sale, letting, management and investment advisory of homes, land and commercial property across Nairobi, Kiambu, Eldoret and Kajiado."
+        path="/about"
+      />
       {/* ── About Us Hero ── */}
       <PageHero
         seed="jacob-truman-about"

@@ -7,6 +7,8 @@ import { StatusBadge, WhatsAppIcon, Eyebrow } from "../components/common/SmallBi
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import { useDevelopments } from "../context/DevelopmentsContext";
 import { formatPrice } from "../utils/format";
+import Seo from "../components/common/Seo";
+import { SITE } from "../config/site";
 
 const TIMELINE = [
   { status: "Upcoming", label: "Planning" },
@@ -61,8 +63,29 @@ export default function DevelopmentDetailPage() {
   const mapQuery = encodeURIComponent(`${development.neighborhood}, ${development.city}, Kenya`);
   const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=14&output=embed`;
 
+  const devJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Residence",
+    name: development.title,
+    description: `${development.title} — a ${development.status} development in ${development.neighborhood}, ${development.city} by ${development.developer || SITE.name}.`,
+    url: `${SITE.url}/developments/${development.id}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: development.neighborhood,
+      addressRegion: development.city,
+      addressCountry: "KE",
+    },
+  };
+
   return (
     <div className="jth-detail jth-dev-detail">
+      <Seo
+        title={`${development.title} — ${development.status} Development in ${development.neighborhood}, ${development.city}`}
+        description={`${development.status} development in ${development.neighborhood}, ${development.city} by ${development.developer || "Truman Properties"}. Unit types, pricing and progress from Jacob Truman Properties.`}
+        path={`/developments/${development.id}`}
+        image={gallery?.[0]}
+        jsonLd={devJsonLd}
+      />
       <button className="jth-back" onClick={() => navigate("/developments")}>
         <ChevronLeft size={16} /> Back to developments
       </button>

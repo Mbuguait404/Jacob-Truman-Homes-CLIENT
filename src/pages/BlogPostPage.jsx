@@ -7,6 +7,8 @@ import { Eyebrow, WhatsAppIcon } from "../components/common/SmallBits";
 import { useBlogs } from "../context/BlogsContext";
 import { formatBlogDate } from "../utils/format";
 import { BLOGS } from "../data/blogs";
+import Seo from "../components/common/Seo";
+import { SITE } from "../config/site";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -23,8 +25,27 @@ export default function BlogPostPage() {
     .filter((b) => b.slug !== post.slug)
     .slice(0, 2);
 
+  const postJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    author: { "@type": "Person", name: post.author || SITE.name },
+    datePublished: post.publishedAt,
+    publisher: { "@id": `${SITE.url}/#agent` },
+    mainEntityOfPage: `${SITE.url}/blogs/${post.slug}`,
+  };
+
   return (
     <div className="jth-blog-post">
+      <Seo
+        title={post.title}
+        description={post.excerpt}
+        path={`/blogs/${post.slug}`}
+        image={post.coverImage}
+        type="article"
+        jsonLd={postJsonLd}
+      />
       <Link className="jth-back" to="/blogs">
         <ChevronLeft size={16} /> Back to blog
       </Link>

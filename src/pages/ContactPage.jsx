@@ -7,6 +7,7 @@ import FaqSection from "../components/common/FaqSection";
 import PageHero from "../components/common/PageHero";
 import { api } from "../api/client";
 import { Button } from "../components/common/Button";
+import Seo from "../components/common/Seo";
 import { CONTACT_FAQS } from "../data/faqs";
 
 const ThreadsIcon = () => (
@@ -45,6 +46,11 @@ export default function ContactPage() {
 
   return (
     <div className="jth-contact">
+      <Seo
+        title="Contact Jacob Truman Properties — Speak to a Kenyan Real Estate Agent"
+        description="Get in touch with Truman Properties (Truman Homes) for buying, selling, renting and property investment across Kenya. Call 0718 806741 or send a message."
+        path="/contact"
+      />
       {/* ── Hero ── */}
       <PageHero
         seed="jacob-truman-contact"

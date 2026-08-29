@@ -9,6 +9,7 @@ import { Eyebrow } from "../components/common/SmallBits";
 import { useDevelopments } from "../context/DevelopmentsContext";
 import { DEVELOPMENTS_FAQS } from "../data/faqs";
 import { DEV_CITIES, DEV_STATUSES } from "../data/developments";
+import Seo from "../components/common/Seo";
 
 const STATUS_TABS = ["All", ...DEV_STATUSES];
 
@@ -43,6 +44,11 @@ export default function DevelopmentsPage() {
 
   return (
     <>
+      <Seo
+        title="Property Developments & Off-Plan Projects in Kenya"
+        description="Explore new-build and off-plan developments across Nairobi, Kiambu, Eldoret and Kajiado from Truman Properties — apartments, villas and mixed-use communities with unit types and pricing."
+        path="/developments"
+      />
       <PageHero
         seed="jacob-truman-developments"
         eyebrow="New-build & off-plan"

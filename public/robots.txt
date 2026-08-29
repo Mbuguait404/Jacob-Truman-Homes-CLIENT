@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trumanproperties.co.ke/sitemap.xml

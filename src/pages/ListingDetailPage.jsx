@@ -11,6 +11,8 @@ import FaqSection from "../components/common/FaqSection";
 import { useListings } from "../context/ListingsContext";
 import { PROPERTY_FAQS } from "../data/faqs";
 import { formatPrice } from "../utils/format";
+import Seo from "../components/common/Seo";
+import { SITE } from "../config/site";
 
 export default function ListingDetailPage() {
   const { id } = useParams();
@@ -31,8 +33,40 @@ export default function ListingDetailPage() {
     typeof window !== "undefined" ? `${window.location.origin}/listings/${listing.id}` : "";
   const listingShareText = `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`;
 
+  const priceText = formatPrice(listing.price);
+  const listingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Residence",
+    name: listing.title,
+    description: `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${listing.beds} bed, ${listing.baths} bath, ${listing.area} m².`,
+    url: `${SITE.url}/listings/${listing.id}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: listing.neighborhood,
+      addressRegion: listing.city,
+      addressCountry: "KE",
+    },
+    numberOfRooms: listing.beds,
+    floorSize: { "@type": "QuantitativeValue", value: listing.area, unitCode: "MTK" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "KES",
+      price: listing.price,
+      availability:
+        listing.status === "Sold" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      url: `${SITE.url}/listings/${listing.id}`,
+    },
+  };
+
   return (
     <div className="jth-detail">
+      <Seo
+        title={`${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`}
+        description={`${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${listing.beds} bed, ${listing.baths} bath, ${listing.area} m². ${priceText}. Verified by Jacob Truman Properties.`}
+        path={`/listings/${listing.id}`}
+        image={listing.images?.[0]}
+        jsonLd={listingJsonLd}
+      />
       <button className="jth-back" onClick={() => navigate("/listings")}>
         <ChevronLeft size={16} /> Back to listings
       </button>

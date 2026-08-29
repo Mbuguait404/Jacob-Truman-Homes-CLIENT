@@ -4,10 +4,12 @@ import { ShieldCheck } from "lucide-react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import FloatingSocials from "../common/FloatingSocials";
+import SiteStructuredData from "./SiteStructuredData";
 
 export default function SiteLayout() {
   return (
     <div className="jth-root">
+      <SiteStructuredData />
       <Nav />
       <main>
         <Outlet />

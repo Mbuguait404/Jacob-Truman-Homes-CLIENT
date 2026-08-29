@@ -10,6 +10,7 @@ import { useListings } from "../context/ListingsContext";
 import { LISTINGS_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
 import { NEIGHBOURHOODS, NEIGHBOURHOOD_NAMES } from "../data/neighbourhoods";
+import Seo from "../components/common/Seo";
 
 const PropertyMap = lazy(() => import("../components/common/PropertyMap"));
 
@@ -76,8 +77,16 @@ export default function ListingsPage() {
     });
   }, [visibleListings, city, type, beds]);
 
+  const locationLabel =
+    neighborhood !== "All" ? neighborhood : city !== "All" ? city : "Kenya";
+  const typeLabel = type === "For Sale" ? "for sale" : type === "For Rent" ? "for rent" : "for sale & rent";
+  const seoTitle = `Properties ${typeLabel} in ${locationLabel}`;
+  const seoDescription = `Browse verified properties ${typeLabel} in ${locationLabel}. Houses, apartments, villas, townhouses and land from Truman Properties — Jacob Truman Properties, trusted real estate agents in Kenya.`;
+  const canonicalPath = `/listings${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+
   return (
     <>
+      <Seo title={seoTitle} description={seoDescription} path={canonicalPath} />
       <PageHero
         seed="jacob-truman-listings"
         eyebrow="Browse"
