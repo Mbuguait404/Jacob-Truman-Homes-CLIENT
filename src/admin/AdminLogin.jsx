@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Seal from "../components/common/Seal";
 import { useAdminAuth } from "./AdminAuthContext";
 import { loginAdmin } from "../api/client";
+import { Button } from "../components/common/Button";
 
 export default function AdminLogin() {
   const { login } = useAdminAuth();
@@ -77,13 +78,9 @@ export default function AdminLogin() {
           </div>
         </div>
 
-        <button
-          className="jth-btn jth-btn--primary jth-btn--block"
-          type="submit"
-          disabled={submitting}
-        >
-          {submitting ? "Signing in…" : "Sign in"}
-        </button>
+        <Button type="submit" className="jth-btn--primary jth-btn--block" loading={submitting}>
+          Sign in
+        </Button>
       </form>
       <Link className="jth-link jth-admin-login__exit" to="/">
         ← Back to site

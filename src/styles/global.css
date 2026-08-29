@@ -102,6 +102,40 @@
   width: 100%;
   justify-content: center;
 }
+.jth-btn[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.jth-btn__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Spinner */
+.jth-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.jth-spinner__circle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: jth-spin 0.7s linear infinite;
+  opacity: 0.9;
+}
+.jth-spinner--light .jth-spinner__circle {
+  border-color: rgba(255, 255, 255, 0.55);
+  border-top-color: #fff;
+}
+@keyframes jth-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .jth-link {
   display: inline-flex;
   align-items: center;
@@ -1542,13 +1576,28 @@ a.jth-topbar__item:hover {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
+/* When the map is hidden the list takes full width — show 4 per row */
+.jth-split--collapsed .jth-listings-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 1280px) {
+  .jth-split--collapsed .jth-listings-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 @media (max-width: 960px) {
   .jth-listings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .jth-split--collapsed .jth-listings-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 640px) {
   .jth-listings-grid {
+    grid-template-columns: 1fr;
+  }
+  .jth-split--collapsed .jth-listings-grid {
     grid-template-columns: 1fr;
   }
   .jth-filters__bar {
@@ -2292,7 +2341,7 @@ a.jth-topbar__item:hover {
 /* ---------------------------------- SERVICES PAGE ---------------------------------- */
 .jth-services-page__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
 .jth-service-page-card {
@@ -2366,6 +2415,11 @@ a.jth-topbar__item:hover {
   flex-shrink: 0;
 }
 
+@media (max-width: 1000px) {
+  .jth-services-page__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @media (max-width: 800px) {
   .jth-services-page__grid {
     grid-template-columns: 1fr;
@@ -2738,26 +2792,45 @@ a.jth-topbar__item:hover {
 .jth-split--collapsed {
   display: block;
 }
-.jth-map-show {
+.jth-map-fab {
   position: fixed;
   right: 22px;
-  bottom: 22px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 50;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 18px;
-  border-radius: 999px;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   border: none;
   background: var(--terracotta);
   color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(176, 83, 46, 0.45);
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+.jth-map-fab__label {
+  display: none;
+  margin-left: 8px;
   font-weight: 700;
   font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 8px 22px rgba(176, 83, 46, 0.4);
+  white-space: nowrap;
 }
-.jth-map-show:hover {
+.jth-map-fab:hover {
   filter: brightness(1.05);
+  transform: translateY(-50%) scale(1.05);
+}
+@media (min-width: 1100px) {
+  .jth-map-fab {
+    width: auto;
+    padding: 0 18px;
+    border-radius: 999px;
+  }
+  .jth-map-fab__label {
+    display: inline;
+  }
 }
 
 /* Expanded: map becomes a full-screen overlay */
@@ -3402,65 +3475,87 @@ a.jth-topbar__item:hover {
 }
 
 /* ---------------------------------- NEIGHBOURHOODS ---------------------------------- */
-.jth-hoods__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+.jth-hoods__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
 }
-.jth-hood {
-  display: block;
-  text-decoration: none;
-  color: inherit;
+.jth-hood-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
   border: 1px solid var(--line);
   border-radius: 3px;
-  overflow: hidden;
   background: var(--card);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
-.jth-hood:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px rgba(10, 37, 64, 0.12);
-}
-.jth-hood__media {
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-}
-.jth-hood__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.jth-hood:hover .jth-hood__media img {
-  transform: scale(1.06);
-}
-.jth-hood__body {
-  padding: 16px 18px 20px;
-}
-.jth-hood__city {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+.jth-hood-link:hover {
+  border-color: var(--terracotta);
   color: var(--terracotta);
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------- AREA SEO LINKS ---------------------------------- */
+.jth-areas__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px 40px;
+}
+.jth-area-group__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  text-decoration: none;
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--terracotta);
+  padding-bottom: 6px;
+}
+.jth-area-group__title:hover {
+  color: var(--terracotta);
+}
+.jth-area-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 18px;
+}
+.jth-area-link {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.jth-area-link::before {
+  content: "›";
+  color: var(--terracotta);
+  margin-right: 6px;
   font-weight: 700;
 }
-.jth-hood__body h3 {
-  font-size: 20px;
-  margin: 4px 0 6px;
-}
-.jth-hood__tagline {
-  font-size: 14px;
-  color: #4a5e72;
-  line-height: 1.5;
-  margin-bottom: 12px;
+.jth-area-link:hover {
+  color: var(--terracotta);
+  border-color: var(--line);
 }
 @media (max-width: 960px) {
-  .jth-hoods__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .jth-areas__grid {
+    grid-template-columns: 1fr;
   }
 }
 @media (max-width: 560px) {
-  .jth-hoods__grid {
+  .jth-area-group__list {
     grid-template-columns: 1fr;
   }
 }

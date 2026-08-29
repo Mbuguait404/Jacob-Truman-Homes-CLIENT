@@ -6,6 +6,7 @@ import { Eyebrow } from "../components/common/SmallBits";
 import RevealOnScroll from "../components/common/RevealOnScroll";
 import { api } from "../api/client";
 import { useListings } from "../context/ListingsContext";
+import { Button } from "../components/common/Button";
 
 export default function EnquiryPage({ mode }) {
   const [sent, setSent] = useState(false);
@@ -152,9 +153,9 @@ export default function EnquiryPage({ mode }) {
               {isSell ? "Tell us about the property" : "What are you looking for?"}
               <textarea name="message" rows={4} placeholder={isSell ? "Bedrooms, size, condition..." : "Budget, bedrooms, timeline..."} />
             </label>
-            <button className="jth-btn jth-btn--primary jth-btn--block" type="submit" disabled={submitting}>
-              <Send size={16} /> {submitting ? "Sending…" : "Submit enquiry"}
-            </button>
+            <Button type="submit" className="jth-btn--primary jth-btn--block" loading={submitting}>
+              <Send size={16} /> Submit enquiry
+            </Button>
           </form>
         )}
       </div>

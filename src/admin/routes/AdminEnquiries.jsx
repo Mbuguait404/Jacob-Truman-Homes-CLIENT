@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FileText, PhoneCall, CheckCircle2, RotateCcw, X, Mail, Phone, MapPin, Home } from "lucide-react";
 import { api } from "../../api/client";
+import { Spinner } from "../../components/common/Spinner";
 
 export const STATUS_LABELS = {
   new: { color: "#b45309", bg: "#fff7ed", label: "New" },
@@ -90,7 +91,7 @@ function ServiceBadge({ service }) {
   );
 }
 
-function EnquiryCard({ e, onSelect, onUpdateStatus }) {
+function EnquiryCard({ e, onSelect, onUpdateStatus, updating }) {
   return (
     <div className="jth-admin__card">
       <div className="jth-admin__card-row">
@@ -129,22 +130,22 @@ function EnquiryCard({ e, onSelect, onUpdateStatus }) {
       )}
       <div className="jth-admin__card-row">
         <div className="jth-admin__row-actions">
-          <button onClick={() => onSelect(e)}>
+          <button onClick={() => onSelect(e)} disabled={updating}>
             <FileText size={12} /> View
           </button>
           {e.status !== "contacted" && (
-            <button onClick={() => onUpdateStatus(e.id, "contacted")}>
-              <PhoneCall size={12} /> Contact
+            <button onClick={() => onUpdateStatus(e.id, "contacted")} disabled={updating}>
+              {updating ? <Spinner size={12} /> : <PhoneCall size={12} />} Contact
             </button>
           )}
           {e.status !== "closed" && (
-            <button onClick={() => onUpdateStatus(e.id, "closed")}>
-              <CheckCircle2 size={12} /> Close
+            <button onClick={() => onUpdateStatus(e.id, "closed")} disabled={updating}>
+              {updating ? <Spinner size={12} /> : <CheckCircle2 size={12} />} Close
             </button>
           )}
           {e.status !== "new" && (
-            <button onClick={() => onUpdateStatus(e.id, "new")}>
-              <RotateCcw size={12} /> Reopen
+            <button onClick={() => onUpdateStatus(e.id, "new")} disabled={updating}>
+              {updating ? <Spinner size={12} /> : <RotateCcw size={12} />} Reopen
             </button>
           )}
         </div>
@@ -160,6 +161,7 @@ export default function AdminEnquiries() {
   const [filter, setFilter] = useState("");
   const [serviceFilter, setServiceFilter] = useState("");
   const [selected, setSelected] = useState(null);
+  const [updatingId, setUpdatingId] = useState(null);
 
   const fetchEnquiries = async () => {
     setLoading(true);
@@ -184,33 +186,39 @@ export default function AdminEnquiries() {
 
   const updateStatus = async (id, status) => {
     try {
+      setUpdatingId(id);
       await api.patch(`/enquiries/${id}`, { status });
       setEnquiries((prev) => prev.map((e) => (e.id === id ? { ...e, status } : e)));
       setSelected((prev) => (prev && prev.id === id ? { ...prev, status } : prev));
     } catch (err) {
       alert(err.message || "Failed to update status");
+    } finally {
+      setUpdatingId(null);
     }
   };
 
-  const statusActions = (e) => (
-    <div className="jth-admin__row-actions">
-      {e.status !== "contacted" && (
-        <button title="Mark as contacted" onClick={() => updateStatus(e.id, "contacted")}>
-          <PhoneCall size={12} /> Contact
-        </button>
-      )}
-      {e.status !== "closed" && (
-        <button title="Mark as closed" onClick={() => updateStatus(e.id, "closed")}>
-          <CheckCircle2 size={12} /> Close
-        </button>
-      )}
-      {e.status !== "new" && (
-        <button title="Re-open as new" onClick={() => updateStatus(e.id, "new")}>
-          <RotateCcw size={12} /> Reopen
-        </button>
-      )}
-    </div>
-  );
+  const statusActions = (e) => {
+    const pending = updatingId === e.id;
+    return (
+      <div className="jth-admin__row-actions">
+        {e.status !== "contacted" && (
+          <button title="Mark as contacted" onClick={() => updateStatus(e.id, "contacted")} disabled={pending}>
+            {pending ? <Spinner size={12} /> : <PhoneCall size={12} />} Contact
+          </button>
+        )}
+        {e.status !== "closed" && (
+          <button title="Mark as closed" onClick={() => updateStatus(e.id, "closed")} disabled={pending}>
+            {pending ? <Spinner size={12} /> : <CheckCircle2 size={12} />} Close
+          </button>
+        )}
+        {e.status !== "new" && (
+          <button title="Re-open as new" onClick={() => updateStatus(e.id, "new")} disabled={pending}>
+            {pending ? <Spinner size={12} /> : <RotateCcw size={12} />} Reopen
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -270,7 +278,7 @@ export default function AdminEnquiries() {
                     <td>{formatDate(e.createdAt)}</td>
                     <td>
                       <div className="jth-admin__row-actions">
-                        <button title="View full enquiry" onClick={() => setSelected(e)}>
+                        <button title="View full enquiry" onClick={() => setSelected(e)} disabled={updatingId === e.id}>
                           <FileText size={12} /> View
                         </button>
                         {statusActions(e)}
@@ -283,7 +291,13 @@ export default function AdminEnquiries() {
 
             <div className="jth-admin__cards">
               {enquiries.map((e) => (
-                <EnquiryCard key={e.id} e={e} onSelect={setSelected} onUpdateStatus={updateStatus} />
+                <EnquiryCard
+                  key={e.id}
+                  e={e}
+                  onSelect={setSelected}
+                  onUpdateStatus={updateStatus}
+                  updating={updatingId === e.id}
+                />
               ))}
             </div>
           </>

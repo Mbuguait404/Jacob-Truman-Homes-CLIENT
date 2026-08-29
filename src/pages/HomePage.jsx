@@ -14,6 +14,7 @@ import { PROCESS_STEPS } from "../data/process";
 import { HOME_FAQS } from "../data/faqs";
 import { CITIES } from "../data/listings";
 import { NEIGHBOURHOODS } from "../data/neighbourhoods";
+import { AREA_GROUPS, buildAreaHref } from "../data/areas";
 
 export default function HomePage() {
   const { visibleListings } = useListings();
@@ -244,14 +245,14 @@ export default function HomePage() {
       <RevealOnScroll delay={100}>
         <section className="jth-section jth-cities">
           <Link className="jth-city-panel" to="/listings?city=Nairobi">
-            <Img seed="city-nairobi" w={900} h={1100} />
+            <Img src="/orchid-homes_nai.jpg" w={900} h={1100} alt="Property in Nairobi" />
             <div className="jth-city-panel__label">
               <h3>Nairobi &amp; Kiambu</h3>
               <span>Karen · Kilimani · Runda · Westlands · Lavington · Kiambu · Thika</span>
             </div>
           </Link>
           <Link className="jth-city-panel" to="/listings?city=Eldoret">
-            <Img seed="city-eldoret" w={900} h={1100} />
+            <Img src="/3-bedroom-apartment-for-sale-in-eldoret-town-mcefk.jpg" w={900} h={1100} alt="Property in Eldoret" />
             <div className="jth-city-panel__label">
               <h3>Eldoret &amp; Kajiado</h3>
               <span>Elgon View · Pioneer · Kapsoya · Racecourse · Kajiado · Ngong</span>
@@ -271,19 +272,47 @@ export default function HomePage() {
               Browse all listings <ChevronRight size={16} />
             </Link>
           </div>
-          <div className="jth-hoods__grid">
+          <div className="jth-hoods__links">
             {NEIGHBOURHOODS.map((n) => (
-              <Link key={n.name} to={`/listings?neighborhood=${encodeURIComponent(n.name)}`} className="jth-hood">
-                <div className="jth-hood__media">
-                  <Img seed={n.seed} w={700} h={520} alt={n.name} />
-                </div>
-                <div className="jth-hood__body">
-                  <span className="jth-hood__city">{n.city}</span>
-                  <h3>{n.name}</h3>
-                  <p className="jth-hood__tagline">{n.tagline}</p>
-                  <span className="jth-link">View homes <ChevronRight size={15} /></span>
-                </div>
+              <Link
+                key={n.name}
+                to={`/listings?neighborhood=${encodeURIComponent(n.name)}`}
+                className="jth-hood-link"
+              >
+                Properties in {n.name} <ChevronRight size={15} />
               </Link>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
+
+      <RevealOnScroll delay={100}>
+        <section className="jth-section jth-areas">
+          <div className="jth-section__head">
+            <div>
+              <Eyebrow>Explore every area</Eyebrow>
+              <h2>Properties across Kenya's key regions</h2>
+            </div>
+          </div>
+          <div className="jth-areas__grid">
+            {AREA_GROUPS.map((g) => (
+              <div className="jth-area-group" key={g.region}>
+                <Link
+                  className="jth-area-group__title"
+                  to={buildAreaHref(g.region, g.type, g.value)}
+                >
+                  Properties in {g.region} <ChevronRight size={15} />
+                </Link>
+                <ul className="jth-area-group__list">
+                  {g.areas.map((a) => (
+                    <li key={a}>
+                      <Link to={buildAreaHref(a, "neighborhood", a)} className="jth-area-link">
+                        Properties in {a}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
         </section>

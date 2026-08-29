@@ -6,6 +6,7 @@ import RevealOnScroll from "../components/common/RevealOnScroll";
 import FaqSection from "../components/common/FaqSection";
 import PageHero from "../components/common/PageHero";
 import { api } from "../api/client";
+import { Button } from "../components/common/Button";
 import { CONTACT_FAQS } from "../data/faqs";
 
 const ThreadsIcon = () => (
@@ -135,9 +136,9 @@ export default function ContactPage() {
                 Message
                 <textarea name="message" rows={5} placeholder="Tell us how we can help..." />
               </label>
-              <button className="jth-btn jth-btn--primary jth-btn--block" type="submit" disabled={submitting}>
-                <Send size={16} /> {submitting ? "Sending…" : "Send message"}
-              </button>
+              <Button type="submit" className="jth-btn--primary jth-btn--block" loading={submitting}>
+                <Send size={16} /> Send message
+              </Button>
             </form>
           )}
         </div>

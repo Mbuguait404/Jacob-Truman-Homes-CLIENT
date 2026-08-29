@@ -4,6 +4,7 @@ import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { useBlogs } from "../../context/BlogsContext";
 import { api } from "../../api/client";
 import { BLOG_CATEGORIES } from "../../data/blogs";
+import { Button } from "../../components/common/Button";
 
 function slugify(text) {
   return String(text || "")
@@ -36,6 +37,7 @@ export default function AdminBlogForm() {
   const { blogs, addBlog, updateBlog } = useBlogs();
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const existing = id ? blogs.find((b) => String(b.id) === id) : null;
   const [form, setForm] = useState(
@@ -100,6 +102,7 @@ export default function AdminBlogForm() {
     };
 
     try {
+      setSaving(true);
       if (existing) {
         await updateBlog({ ...payload, _id: existing._id, id: existing.id });
       } else {
@@ -108,6 +111,8 @@ export default function AdminBlogForm() {
       navigate("/admin/blogs");
     } catch (err) {
       alert(err.message || "Save failed");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -174,14 +179,14 @@ export default function AdminBlogForm() {
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
               />
-              <button
+              <Button
                 type="button"
-                className="jth-btn jth-btn--outline"
+                className="jth-btn--outline"
+                loading={uploading}
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
               >
-                <Upload size={15} /> {uploading ? "Uploading…" : "Upload cover"}
-              </button>
+                <Upload size={15} /> Upload cover
+              </Button>
             </div>
             {form.coverImage && (
               <div className="jth-admin__image-previews">
@@ -238,9 +243,9 @@ export default function AdminBlogForm() {
             <button type="button" className="jth-btn jth-btn--outline" onClick={() => navigate("/admin/blogs")}>
               Cancel
             </button>
-            <button type="submit" className="jth-btn jth-btn--primary">
+            <Button type="submit" className="jth-btn--primary" loading={saving}>
               Save post
-            </button>
+            </Button>
           </div>
         </form>
       </div>

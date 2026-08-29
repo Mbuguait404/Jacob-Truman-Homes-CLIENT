@@ -4,6 +4,7 @@ import { Upload, X } from "lucide-react";
 import { useListings } from "../../context/ListingsContext";
 import { api } from "../../api/client";
 import { CITIES } from "../../data/listings";
+import { Button } from "../../components/common/Button";
 
 const BLANK_FORM = {
   title: "", city: "Nairobi", neighborhood: "", price: "", listingType: "For Sale",
@@ -17,6 +18,7 @@ export default function AdminListingForm() {
   const { listings, addListing, updateListing } = useListings();
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const existing = id ? listings.find((l) => String(l.id) === id) : null;
   const [form, setForm] = useState(
@@ -73,6 +75,7 @@ export default function AdminListingForm() {
     };
 
     try {
+      setSaving(true);
       if (existing) {
         await updateListing({ ...payload, _id: existing._id, id: existing.id });
       } else {
@@ -81,6 +84,8 @@ export default function AdminListingForm() {
       navigate("/admin/listings");
     } catch (err) {
       alert(err.message || "Save failed");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -175,14 +180,14 @@ export default function AdminListingForm() {
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
               />
-              <button
+              <Button
                 type="button"
-                className="jth-btn jth-btn--outline"
+                className="jth-btn--outline"
+                loading={uploading}
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
               >
-                <Upload size={15} /> {uploading ? "Uploading…" : "Upload images"}
-              </button>
+                <Upload size={15} /> Upload images
+              </Button>
             </div>
             {form.images.length > 0 && (
               <div className="jth-admin__image-previews">
@@ -202,9 +207,9 @@ export default function AdminListingForm() {
             <button type="button" className="jth-btn jth-btn--outline" onClick={() => navigate("/admin/listings")}>
               Cancel
             </button>
-            <button type="submit" className="jth-btn jth-btn--primary">
+            <Button type="submit" className="jth-btn--primary" loading={saving}>
               Save listing
-            </button>
+            </Button>
           </div>
         </form>
       </div>

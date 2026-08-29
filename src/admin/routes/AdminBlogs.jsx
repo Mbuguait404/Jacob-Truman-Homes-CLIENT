@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Loader2, Eye, X, ImageOff, Clock } from "lucide-react";
 import { useBlogs } from "../../context/BlogsContext";
 import { formatBlogDate } from "../../utils/format";
+import { Spinner } from "../../components/common/Spinner";
 
 function PreviewModal({ post, onClose }) {
   if (!post) return null;
@@ -45,13 +46,17 @@ export default function AdminBlogs() {
   const { blogs, deleteBlog, loading } = useBlogs();
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (b) => {
     if (!window.confirm(`Delete "${b.title}"? This can't be undone.`)) return;
     try {
+      setDeletingId(b.id);
       await deleteBlog(b.id);
     } catch (err) {
       alert(err.message || "Delete failed");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -96,8 +101,13 @@ export default function AdminBlogs() {
                       <button onClick={() => navigate(`/admin/blogs/${b.id}/edit`)} title="Edit">
                         <Pencil size={12} /> Edit
                       </button>
-                      <button className="jth-admin__row-action--danger" onClick={() => handleDelete(b)} title="Delete">
-                        <Trash2 size={12} /> Delete
+                      <button
+                        className="jth-admin__row-action--danger"
+                        onClick={() => handleDelete(b)}
+                        title="Delete"
+                        disabled={deletingId === b.id}
+                      >
+                        {deletingId === b.id ? <Spinner size={12} /> : <Trash2 size={12} />} Delete
                       </button>
                     </td>
                   </tr>
@@ -141,8 +151,12 @@ export default function AdminBlogs() {
                       <button onClick={() => navigate(`/admin/blogs/${b.id}/edit`)}>
                         <Pencil size={12} /> Edit
                       </button>
-                      <button className="jth-admin__row-action--danger" onClick={() => handleDelete(b)}>
-                        <Trash2 size={12} /> Delete
+                      <button
+                        className="jth-admin__row-action--danger"
+                        onClick={() => handleDelete(b)}
+                        disabled={deletingId === b.id}
+                      >
+                        {deletingId === b.id ? <Spinner size={12} /> : <Trash2 size={12} />} Delete
                       </button>
                     </div>
                   </div>

@@ -22,7 +22,7 @@ export default function ListingsPage() {
   const neighborhood = searchParams.get("neighborhood") || "All";
   const type = searchParams.get("type") || "All";
   const beds = searchParams.get("beds") || "Any";
-  const [mapOpen, setMapOpen] = useState(true);
+  const [mapOpen, setMapOpen] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(false);
 
   const activeFilters = [
@@ -232,8 +232,15 @@ export default function ListingsPage() {
         </div>
 
         {!mapOpen && (
-          <button type="button" className="jth-map-show" onClick={() => setMapOpen(true)}>
-            <MapPin size={15} /> Show map
+          <button
+            type="button"
+            className="jth-map-fab"
+            onClick={() => setMapOpen(true)}
+            title="Show map"
+            aria-label="Show map"
+          >
+            <MapPin size={22} />
+            <span className="jth-map-fab__label">Open map</span>
           </button>
         )}
 

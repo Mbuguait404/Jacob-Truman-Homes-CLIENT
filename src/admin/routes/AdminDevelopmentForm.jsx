@@ -4,6 +4,7 @@ import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { useDevelopments } from "../../context/DevelopmentsContext";
 import { api } from "../../api/client";
 import { DEV_CITIES, DEV_STATUSES } from "../../data/developments";
+import { Button } from "../../components/common/Button";
 
 const BLANK_FORM = {
   title: "",
@@ -30,6 +31,7 @@ export default function AdminDevelopmentForm() {
   const { developments, addDevelopment, updateDevelopment } = useDevelopments();
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const existing = id ? developments.find((d) => String(d.id) === id) : null;
   const [form, setForm] = useState(
@@ -102,6 +104,7 @@ export default function AdminDevelopmentForm() {
     };
 
     try {
+      setSaving(true);
       if (existing) {
         await updateDevelopment({ ...payload, _id: existing._id, id: existing.id });
       } else {
@@ -110,6 +113,8 @@ export default function AdminDevelopmentForm() {
       navigate("/admin/developments");
     } catch (err) {
       alert(err.message || "Save failed");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -229,14 +234,14 @@ export default function AdminDevelopmentForm() {
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
               />
-              <button
+              <Button
                 type="button"
-                className="jth-btn jth-btn--outline"
+                className="jth-btn--outline"
+                loading={uploading}
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
               >
-                <Upload size={15} /> {uploading ? "Uploading…" : "Upload images"}
-              </button>
+                <Upload size={15} /> Upload images
+              </Button>
             </div>
             {form.images.length > 0 && (
               <div className="jth-admin__image-previews">
@@ -256,9 +261,9 @@ export default function AdminDevelopmentForm() {
             <button type="button" className="jth-btn jth-btn--outline" onClick={() => navigate("/admin/developments")}>
               Cancel
             </button>
-            <button type="submit" className="jth-btn jth-btn--primary">
+            <Button type="submit" className="jth-btn--primary" loading={saving}>
               Save development
-            </button>
+            </Button>
           </div>
         </form>
       </div>

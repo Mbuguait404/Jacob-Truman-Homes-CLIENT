@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Loader2, Eye, X, MapPin, ImageOff } from "lucide-react";
 import { StatusBadge } from "../../components/common/SmallBits";
 import { useDevelopments } from "../../context/DevelopmentsContext";
+import { Spinner } from "../../components/common/Spinner";
 
 function PreviewModal({ development, onClose }) {
   if (!development) return null;
@@ -41,7 +42,7 @@ function PreviewModal({ development, onClose }) {
   );
 }
 
-function DevelopmentCard({ development, onPreview, onEdit, onDelete }) {
+function DevelopmentCard({ development, onPreview, onEdit, onDelete, deleting }) {
   return (
     <div className="jth-admin__card">
       <div className="jth-admin__card-row">
@@ -67,14 +68,18 @@ function DevelopmentCard({ development, onPreview, onEdit, onDelete }) {
       </div>
       <div className="jth-admin__card-row">
         <div className="jth-admin__row-actions">
-          <button onClick={() => onPreview(development)}>
+          <button onClick={() => onPreview(development)} disabled={deleting}>
             <Eye size={12} /> Preview
           </button>
-          <button onClick={() => onEdit(development.id)}>
+          <button onClick={() => onEdit(development.id)} disabled={deleting}>
             <Pencil size={12} /> Edit
           </button>
-          <button className="jth-admin__row-action--danger" onClick={() => onDelete(development)}>
-            <Trash2 size={12} /> Delete
+          <button
+            className="jth-admin__row-action--danger"
+            onClick={() => onDelete(development)}
+            disabled={deleting}
+          >
+            {deleting ? <Spinner size={12} /> : <Trash2 size={12} />} Delete
           </button>
         </div>
       </div>
@@ -86,13 +91,17 @@ export default function AdminDevelopments() {
   const { developments, deleteDevelopment, loading } = useDevelopments();
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (d) => {
     if (!window.confirm(`Delete "${d.title}"? This can't be undone.`)) return;
     try {
+      setDeletingId(d.id);
       await deleteDevelopment(d.id);
     } catch (err) {
       alert(err.message || "Delete failed");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -139,8 +148,13 @@ export default function AdminDevelopments() {
                       <button onClick={() => navigate(`/admin/developments/${d.id}/edit`)} title="Edit">
                         <Pencil size={12} /> Edit
                       </button>
-                      <button className="jth-admin__row-action--danger" onClick={() => handleDelete(d)} title="Delete">
-                        <Trash2 size={12} /> Delete
+                      <button
+                        className="jth-admin__row-action--danger"
+                        onClick={() => handleDelete(d)}
+                        title="Delete"
+                        disabled={deletingId === d.id}
+                      >
+                        {deletingId === d.id ? <Spinner size={12} /> : <Trash2 size={12} />} Delete
                       </button>
                     </td>
                   </tr>
@@ -161,6 +175,7 @@ export default function AdminDevelopments() {
                   onPreview={setPreview}
                   onEdit={(id) => navigate(`/admin/developments/${id}/edit`)}
                   onDelete={handleDelete}
+                  deleting={deletingId === d.id}
                 />
               ))}
               {developments.length === 0 && <p>No developments yet.</p>}
