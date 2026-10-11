@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Upload, X } from "lucide-react";
 import { useListings } from "../../context/ListingsContext";
 import { api } from "../../api/client";
-import { CITIES } from "../../data/listings";
+import { CITIES, PROPERTY_TYPES } from "../../data/listings";
 import { Button } from "../../components/common/Button";
 
 const BLANK_FORM = {
@@ -35,6 +35,13 @@ export default function AdminListingForm() {
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
   const toggle = (key) => () => setForm({ ...form, [key]: !form[key] });
+  const setPropertyType = (e) =>
+    setForm((prev) => ({
+      ...prev,
+      propertyType: e.target.value,
+      ...(e.target.value === "Land" ? { beds: 0, baths: 0 } : {}),
+    }));
+  const isLand = form.propertyType === "Land";
 
   const handleImageUpload = async (e) => {
     const files = e.target.files;
@@ -124,23 +131,26 @@ export default function AdminListingForm() {
             </label>
             <label>
               Property type
-              <select value={form.propertyType} onChange={set("propertyType")}>
-                <option>Apartment</option>
-                <option>House</option>
-                <option>Villa</option>
-                <option>Townhouse</option>
+              <select value={form.propertyType} onChange={setPropertyType}>
+                {PROPERTY_TYPES.map((t) => (
+                  <option key={t}>{t}</option>
+                ))}
               </select>
             </label>
+            {!isLand && (
+              <>
+                <label>
+                  Bedrooms
+                  <input type="number" min="0" value={form.beds} onChange={set("beds")} />
+                </label>
+                <label>
+                  Bathrooms
+                  <input type="number" min="0" value={form.baths} onChange={set("baths")} />
+                </label>
+              </>
+            )}
             <label>
-              Bedrooms
-              <input type="number" min="0" value={form.beds} onChange={set("beds")} />
-            </label>
-            <label>
-              Bathrooms
-              <input type="number" min="0" value={form.baths} onChange={set("baths")} />
-            </label>
-            <label>
-              Area (m²)
+              {isLand ? "Plot size (m²)" : "Area (m²)"}
               <input type="number" value={form.area} onChange={set("area")} />
             </label>
             <label>

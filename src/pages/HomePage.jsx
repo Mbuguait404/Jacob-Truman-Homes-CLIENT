@@ -172,7 +172,7 @@ export default function HomePage() {
               <h3>Property Sales</h3>
               <p>Expert guidance through every step of buying or selling residential, commercial and land properties.</p>
               <Link className="jth-link" to="/listings?type=For+Sale">
-                Browse homes for sale <ChevronRight size={15} />
+                Browse properties for sale <ChevronRight size={15} />
               </Link>
             </div>
             <div className="jth-service-card">
@@ -282,7 +282,7 @@ export default function HomePage() {
           <div className="jth-section__head">
             <div>
               <Eyebrow>Where you want to live</Eyebrow>
-              <h2>Find a home by neighbourhood</h2>
+              <h2>Find a property by neighbourhood</h2>
             </div>
             <Link className="jth-link" to="/listings">
               Browse all listings <ChevronRight size={16} />

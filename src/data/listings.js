@@ -1,5 +1,7 @@
 export const CITIES = ["Nairobi", "Kiambu", "Eldoret", "Kajiado"];
 
+export const PROPERTY_TYPES = ["Apartment", "House", "Villa", "Townhouse", "Land"];
+
 export const INITIAL_LISTINGS = [
   {
     id: 1, title: "Acacia Ridge Villa", city: "Nairobi", neighborhood: "Karen",

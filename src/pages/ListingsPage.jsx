@@ -8,8 +8,9 @@ import PageHero from "../components/common/PageHero";
 import { useState, useMemo, lazy, Suspense } from "react";
 import { useListings } from "../context/ListingsContext";
 import { LISTINGS_FAQS } from "../data/faqs";
-import { CITIES } from "../data/listings";
+import { CITIES, PROPERTY_TYPES } from "../data/listings";
 import { NEIGHBOURHOODS, NEIGHBOURHOOD_NAMES } from "../data/neighbourhoods";
+import { listingNoun } from "../utils/format";
 import Seo from "../components/common/Seo";
 
 const PropertyMap = lazy(() => import("../components/common/PropertyMap"));
@@ -22,15 +23,21 @@ export default function ListingsPage() {
   const city = searchParams.get("city") || "All";
   const neighborhood = searchParams.get("neighborhood") || "All";
   const type = searchParams.get("type") || "All";
+  const property = searchParams.get("property") || "All";
   const beds = searchParams.get("beds") || "Any";
   const [mapOpen, setMapOpen] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(false);
+
+  const isLandFilter = property === "Land";
+  const noun = listingNoun(property);
+  const nounPlural = listingNoun(property, true);
 
   const activeFilters = [
     city !== "All" && { key: "city", label: city },
     neighborhood !== "All" && { key: "neighborhood", label: neighborhood },
     type !== "All" && { key: "type", label: type },
-    beds !== "Any" && { key: "beds", label: `${beds} beds+` },
+    property !== "All" && { key: "property", label: property },
+    !isLandFilter && beds !== "Any" && { key: "beds", label: `${beds} beds+` },
   ].filter(Boolean);
 
   const updateParam = (key, value) => {
@@ -48,7 +55,8 @@ export default function ListingsPage() {
     if (city !== "All" && l.city !== city) return false;
     if (neighborhood !== "All" && l.neighborhood !== neighborhood) return false;
     if (type !== "All" && l.listingType !== type) return false;
-    if (beds !== "Any" && l.beds < Number(beds)) return false;
+    if (property !== "All" && l.propertyType !== property) return false;
+    if (!isLandFilter && beds !== "Any" && l.beds < Number(beds)) return false;
     return true;
   });
 
@@ -60,27 +68,32 @@ export default function ListingsPage() {
         if (l.neighborhood !== n.name) return false;
         if (city !== "All" && l.city !== city) return false;
         if (type !== "All" && l.listingType !== type) return false;
-        if (beds !== "Any" && l.beds < Number(beds)) return false;
+        if (property !== "All" && l.propertyType !== property) return false;
+        if (!isLandFilter && beds !== "Any" && l.beds < Number(beds)) return false;
         return true;
       }).length;
       return { name: n.name, city: n.city, lat: n.lat, lng: n.lng, count };
     }).filter((p) => p.count > 0);
-  }, [visibleListings, city, type, beds]);
+  }, [visibleListings, city, type, property, beds, isLandFilter]);
 
   // Same set used for the map pins, but kept as listings for rich popups
   const mapListings = useMemo(() => {
     return visibleListings.filter((l) => {
       if (city !== "All" && l.city !== city) return false;
       if (type !== "All" && l.listingType !== type) return false;
-      if (beds !== "Any" && l.beds < Number(beds)) return false;
+      if (property !== "All" && l.propertyType !== property) return false;
+      if (!isLandFilter && beds !== "Any" && l.beds < Number(beds)) return false;
       return true;
     });
-  }, [visibleListings, city, type, beds]);
+  }, [visibleListings, city, type, property, beds, isLandFilter]);
 
   const locationLabel =
     neighborhood !== "All" ? neighborhood : city !== "All" ? city : "Kenya";
   const typeLabel = type === "For Sale" ? "for sale" : type === "For Rent" ? "for rent" : "for sale & rent";
-  const seoTitle = `Properties ${typeLabel} in ${locationLabel}`;
+  const seoTitle =
+    property !== "All"
+      ? `${property} ${type !== "All" ? `${typeLabel} ` : ""}in ${locationLabel}`
+      : `Properties ${typeLabel} in ${locationLabel}`;
   const seoDescription = `Browse verified properties ${typeLabel} in ${locationLabel}. Houses, apartments, villas, townhouses and land from Truman Properties — Jacob Truman Properties, trusted real estate agents in Kenya.`;
   const canonicalPath = `/listings${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
@@ -90,7 +103,7 @@ export default function ListingsPage() {
       <PageHero
         seed="jacob-truman-listings"
         eyebrow="Browse"
-        title={`${filtered.length} ${filtered.length === 1 ? "home" : "homes"} across Kenya`}
+        title={`${filtered.length} ${filtered.length === 1 ? noun : nounPlural} across Kenya`}
         subtitle="Verified properties for sale, rent and investment across Nairobi, Kiambu, Eldoret, Kajiado and beyond."
         badges={[
           { icon: <ShieldCheck size={14} />, label: "Verified listings" },
@@ -126,6 +139,15 @@ export default function ListingsPage() {
               </select>
             </div>
             <div className="jth-filters__group">
+              <label>Property type</label>
+              <select value={property} onChange={(e) => updateParam("property", e.target.value)}>
+                <option>All</option>
+                {PROPERTY_TYPES.map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+            <div className="jth-filters__group">
               <label>Neighbourhood</label>
               <select value={neighborhood} onChange={(e) => updateParam("neighborhood", e.target.value)}>
                 <option>All</option>
@@ -134,16 +156,18 @@ export default function ListingsPage() {
                 ))}
               </select>
             </div>
-            <div className="jth-filters__group">
-              <label>Minimum beds</label>
-              <select value={beds} onChange={(e) => updateParam("beds", e.target.value)}>
-                <option>Any</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-              </select>
-            </div>
+            {!isLandFilter && (
+              <div className="jth-filters__group">
+                <label>Minimum beds</label>
+                <select value={beds} onChange={(e) => updateParam("beds", e.target.value)}>
+                  <option>Any</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                </select>
+              </div>
+            )}
           </div>
           <div className="jth-filters__meta">
             {activeFilters.length > 0 && (
@@ -159,7 +183,7 @@ export default function ListingsPage() {
               </div>
             )}
             <div className="jth-filters__count">
-              <SlidersHorizontal size={14} /> {filtered.length} {filtered.length === 1 ? "home" : "homes"}
+              <SlidersHorizontal size={14} /> {filtered.length} {filtered.length === 1 ? noun : nounPlural}
             </div>
           </div>
         </div>
@@ -178,7 +202,7 @@ export default function ListingsPage() {
                 {filtered.length === 0 && (
                   <div className="jth-empty">
                     <Search size={32} />
-                    <h3>No homes match those filters</h3>
+                    <h3>No {nounPlural} match those filters</h3>
                     <p>Try widening your search, or <a href="/buy">tell us what you're after</a> and we'll look for it.</p>
                   </div>
                 )}
@@ -218,8 +242,8 @@ export default function ListingsPage() {
                   <span>
                     <MapPin size={14} />
                     {mapPoints.length
-                      ? `${mapPoints.reduce((s, p) => s + p.count, 0)} homes plotted across ${mapPoints.length} neighbourhoods`
-                      : "No homes plotted yet"}
+                      ? `${mapPoints.reduce((s, p) => s + p.count, 0)} ${nounPlural} plotted across ${mapPoints.length} neighbourhoods`
+                      : `No ${nounPlural} plotted yet`}
                   </span>
                   <span className="jth-prop-map-hint">Tap a pin to filter by neighbourhood</span>
                 </div>
@@ -232,6 +256,8 @@ export default function ListingsPage() {
                       onSelect={(n) => updateParam("neighborhood", n)}
                       onOpenListing={(id) => navigate(`/listings/${id}`)}
                       expanded={mapExpanded}
+                      noun={noun}
+                      nounPlural={nounPlural}
                     />
                   </Suspense>
                 </div>

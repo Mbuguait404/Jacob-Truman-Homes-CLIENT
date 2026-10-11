@@ -34,11 +34,15 @@ export default function ListingDetailPage() {
   const listingShareText = `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`;
 
   const priceText = formatPrice(listing.price);
+  const isLand = listing.propertyType === "Land";
+  const specText = isLand
+    ? `${listing.area} m² plot`
+    : `${listing.beds} bed, ${listing.baths} bath, ${listing.area} m²`;
   const listingJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Residence",
+    "@type": isLand ? "Place" : "Residence",
     name: listing.title,
-    description: `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${listing.beds} bed, ${listing.baths} bath, ${listing.area} m².`,
+    description: `${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${specText}.`,
     url: `${SITE.url}/listings/${listing.id}`,
     address: {
       "@type": "PostalAddress",
@@ -46,7 +50,7 @@ export default function ListingDetailPage() {
       addressRegion: listing.city,
       addressCountry: "KE",
     },
-    numberOfRooms: listing.beds,
+    ...(isLand ? {} : { numberOfRooms: listing.beds }),
     floorSize: { "@type": "QuantitativeValue", value: listing.area, unitCode: "MTK" },
     offers: {
       "@type": "Offer",
@@ -62,7 +66,7 @@ export default function ListingDetailPage() {
     <div className="jth-detail">
       <Seo
         title={`${listing.title} — ${listing.listingType} in ${listing.neighborhood}, ${listing.city}`}
-        description={`${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${listing.beds} bed, ${listing.baths} bath, ${listing.area} m². ${priceText}. Verified by Jacob Truman Properties.`}
+        description={`${listing.listingType} in ${listing.neighborhood}, ${listing.city}. ${specText}. ${priceText}. Verified by Jacob Truman Properties.`}
         path={`/listings/${listing.id}`}
         image={listing.images?.[0]}
         jsonLd={listingJsonLd}
@@ -94,7 +98,10 @@ export default function ListingDetailPage() {
         <div className="jth-detail__main">
           <div className="jth-detail__title-row">
             <div>
-              <span className="jth-card__type">{listing.listingType}</span>
+              <span className="jth-card__type">
+                {listing.listingType}
+                {listing.propertyType ? ` · ${listing.propertyType}` : ""}
+              </span>
               <h1>{listing.title}</h1>
               <span className="jth-card__loc">
                 <MapPin size={14} /> {listing.neighborhood}, {listing.city}
@@ -109,7 +116,7 @@ export default function ListingDetailPage() {
           <SpecRow listing={listing} />
 
           <div className="jth-divider" />
-          <h3 className="jth-detail__subhead">About this home</h3>
+          <h3 className="jth-detail__subhead">About this {isLand ? "land" : "home"}</h3>
           <p className="jth-detail__desc">{listing.description}</p>
 
           <div className="jth-divider" />
@@ -187,7 +194,7 @@ export default function ListingDetailPage() {
       {related.length > 0 && (
         <RevealOnScroll delay={100}>
           <section className="jth-section">
-            <Eyebrow>Related homes</Eyebrow>
+            <Eyebrow>{isLand ? "Related plots" : "Related homes"}</Eyebrow>
             <h2>More in {listing.city}</h2>
             <div className="jth-listings-grid">
               {related.map((l) => (

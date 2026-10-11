@@ -23,10 +23,15 @@ export function StatusBadge({ status }) {
 }
 
 export function SpecRow({ listing, compact }) {
+  const isLand = listing.propertyType === "Land";
   return (
     <div className={`jth-specs ${compact ? "jth-specs--compact" : ""}`}>
-      <span><Bed size={compact ? 14 : 16} /> {listing.beds}</span>
-      <span><Bath size={compact ? 14 : 16} /> {listing.baths}</span>
+      {!isLand && (
+        <>
+          <span><Bed size={compact ? 14 : 16} /> {listing.beds}</span>
+          <span><Bath size={compact ? 14 : 16} /> {listing.baths}</span>
+        </>
+      )}
       <span><Maximize2 size={compact ? 14 : 16} /> {listing.area} m²</span>
     </div>
   );

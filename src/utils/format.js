@@ -3,6 +3,14 @@ export function formatPrice(amount, isRental) {
   return isRental ? `${value} / month` : value;
 }
 
+// Land-aware noun for listing counts and headings. Pass a property type
+// (or "All"/empty for a mixed result) and whether the plural is wanted.
+export function listingNoun(propertyType, plural = false) {
+  if (propertyType === "Land") return plural ? "plots" : "plot";
+  if (!propertyType || propertyType === "All") return plural ? "properties" : "property";
+  return plural ? "homes" : "home";
+}
+
 const MONTHS_SHORT = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",

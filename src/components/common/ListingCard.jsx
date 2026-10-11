@@ -32,7 +32,10 @@ export default function ListingCard({ listing, size = "md" }) {
         </div>
         <div className="jth-card__body">
           <div className="jth-card__top">
-            <span className="jth-card__type">{listing.listingType}</span>
+            <span className="jth-card__type">
+              {listing.listingType}
+              {listing.propertyType ? ` · ${listing.propertyType}` : ""}
+            </span>
             <span className="jth-card__loc">
               <MapPin size={13} /> {listing.neighborhood}, {listing.city}
             </span>

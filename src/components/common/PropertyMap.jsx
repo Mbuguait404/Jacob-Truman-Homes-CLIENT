@@ -12,7 +12,7 @@ const esc = (s = "") =>
     "'": "&#39;",
   }[c]));
 
-export default function PropertyMap({ points, listings, selected, onSelect, onOpenListing, expanded }) {
+export default function PropertyMap({ points, listings, selected, onSelect, onOpenListing, expanded, noun = "property", nounPlural = "properties" }) {
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
@@ -92,7 +92,7 @@ export default function PropertyMap({ points, listings, selected, onSelect, onOp
         <div class="jth-map-pop">
           <div class="jth-map-pop__head">
             <span>${esc(p.name)}</span>
-            <span class="jth-map-pop__count">${p.count} ${p.count === 1 ? "home" : "homes"}</span>
+            <span class="jth-map-pop__count">${p.count} ${p.count === 1 ? noun : nounPlural}</span>
           </div>
           <div class="jth-map-pop__list">${itemsHtml}</div>
           <button type="button" class="jth-map-pop__all" data-hood="${esc(p.name)}">View all in ${esc(p.name)}</button>
@@ -122,7 +122,7 @@ export default function PropertyMap({ points, listings, selected, onSelect, onOp
     });
 
     map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12, animate: true });
-  }, [points, listings, selected]);
+  }, [points, listings, selected, noun, nounPlural]);
 
   // Recompute size when the map panel is expanded/collapsed
   useEffect(() => {
