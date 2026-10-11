@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ChevronUp, ChevronDown, Instagram, Facebook } from "lucide-react";
-import { TikTokIcon } from "./SmallBits";
+import { ChevronUp, ChevronDown } from "lucide-react";
+import { SiFacebook, SiInstagram, SiThreads, SiTiktok, SiWhatsapp } from "react-icons/si";
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
@@ -31,22 +31,22 @@ export default function FloatingSocials() {
     {
       label: "Instagram",
       href: "https://www.instagram.com/jacobtrumanhomes/",
-      icon: <Instagram />,
+      icon: <SiInstagram size={22} />,
     },
     {
       label: "Threads",
       href: "https://www.threads.com/@jacobtrumanhomes",
-      icon: <ThreadsIcon />,
+      icon: <SiThreads size={22} />,
     },
     {
       label: "Facebook",
       href: "https://www.facebook.com/JackTrumanProperties/",
-      icon: <Facebook />,
+      icon: <SiFacebook size={22} />,
     },
     {
       label: "TikTok",
       href: "https://www.tiktok.com/@jacobtrumanhomes",
-      icon: <TikTokIcon />,
+      icon: <SiTiktok size={22} />,
     },
   ];
 
@@ -89,7 +89,7 @@ export default function FloatingSocials() {
         aria-label="Chat on WhatsApp"
         title="Chat on WhatsApp"
       >
-        <WhatsAppIcon />
+        <SiWhatsapp size={28} />
       </a>
     </div>
   );
